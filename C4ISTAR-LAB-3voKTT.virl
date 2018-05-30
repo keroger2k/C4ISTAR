@@ -6,7 +6,7 @@
     <node name="MW-SAT-WAN" type="SIMPLE" subtype="IOSvL2" location="572,185">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 02:53:53 UTC Thu May 24 2018
+! Last configuration change at 18:57:34 UTC Mon May 28 2018
 !
 version 15.2
 service timestamps debug datetime msec
@@ -266,8 +266,8 @@ no asdm history enable
 arp timeout 14400
 no arp permit-nonconnected
 arp rate-limit 8192
-route outside-microwave 172.16.3.0 255.255.255.0 192.168.0.2 1
-route outside-satcom 172.16.3.0 255.255.255.0 192.168.1.102 2
+route outside-microwave 172.16.3.0 255.255.255.0 192.168.0.2 1 track 1
+route outside-satcom 172.16.3.0 255.255.255.0 192.168.1.102 254
 route outside-microwave 172.16.4.0 255.255.255.0 192.168.0.2 1
 timeout xlate 3:00:00
 timeout pat-xlate 0:00:30
@@ -283,6 +283,11 @@ user-identity default-domain LOCAL
 aaa authentication login-history
 no snmp-server location
 no snmp-server contact
+sla monitor 123
+ type echo protocol ipIcmpEcho 192.168.0.2 interface outside-microwave
+ num-packets 3
+ frequency 10
+sla monitor schedule 123 life forever start-time now
 crypto ipsec ikev2 ipsec-proposal P1
  protocol esp encryption aes 3des des
  protocol esp integrity sha-1
@@ -483,6 +488,8 @@ crypto ikev2 policy 1
  lifetime seconds 43200
 crypto ikev2 enable outside-microwave
 crypto ikev2 enable outside-satcom
+!
+track 1 rtr 123 reachability
 telnet timeout 5
 ssh stricthostkeycheck
 ssh timeout 5
@@ -1513,8 +1520,8 @@ no asdm history enable
 arp timeout 14400
 no arp permit-nonconnected
 arp rate-limit 8192
+route outside-microwave-to-afpc 172.16.0.0 255.255.255.0 192.168.0.1 1 track 1
 route outside-satcom 172.16.0.0 255.255.0.0 192.168.1.1 1
-route outside-microwave-to-afpc 172.16.0.0 255.255.255.0 192.168.0.1 1
 route outside-microwave-to-site2 172.16.4.0 255.255.255.0 192.168.0.6 1
 route outside-microwave-to-afpc 172.16.5.0 255.255.255.0 192.168.0.1 1
 timeout xlate 3:00:00
@@ -1531,6 +1538,11 @@ user-identity default-domain LOCAL
 aaa authentication login-history
 no snmp-server location
 no snmp-server contact
+sla monitor 123
+ type echo protocol ipIcmpEcho 192.168.0.1 interface outside-microwave-to-afpc
+ num-packets 3
+ frequency 10
+sla monitor schedule 123 life forever start-time now
 crypto ipsec ikev2 ipsec-proposal P1
  protocol esp encryption aes 3des des
  protocol esp integrity sha-1
@@ -1785,6 +1797,8 @@ crypto ikev2 policy 1
 crypto ikev2 enable outside-microwave-to-afpc
 crypto ikev2 enable outside-satcom
 crypto ikev2 enable outside-microwave-to-site2
+!
+track 1 rtr 123 reachability
 telnet timeout 5
 ssh stricthostkeycheck
 ssh timeout 5
@@ -1875,7 +1889,7 @@ call-home
     <node name="AFPC-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="301,55">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 09:39:10 UTC Thu May 24 2018
+! Last configuration change at 16:00:29 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2006,7 +2020,7 @@ end</entry>
     <node name="LUAY-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="661,55">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 09:48:44 UTC Thu May 24 2018
+! Last configuration change at 16:20:27 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2136,7 +2150,7 @@ end</entry>
     <node name="SITE1-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="133,368">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 09:36:55 UTC Thu May 24 2018
+! Last configuration change at 15:19:38 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2268,7 +2282,7 @@ end</entry>
     <node name="SITE2-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="503,368">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:06:42 UTC Thu May 24 2018
+! Last configuration change at 17:01:26 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2399,7 +2413,7 @@ end</entry>
     <node name="SITE3-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="910,368">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 09:34:01 UTC Thu May 24 2018
+! Last configuration change at 15:59:41 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2529,7 +2543,7 @@ end</entry>
     <node name="AFPC-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="466,55">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 09:42:20 UTC Thu May 24 2018
+! Last configuration change at 16:07:44 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2659,7 +2673,7 @@ end</entry>
     <node name="LUAY-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="807,55">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:08:40 UTC Thu May 24 2018
+! Last configuration change at 17:16:21 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2789,7 +2803,7 @@ end</entry>
     <node name="SITE1-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="255,368">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:18:51 UTC Thu May 24 2018
+! Last configuration change at 17:31:02 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2920,7 +2934,7 @@ end</entry>
     <node name="SITE2-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="629,368">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 09:55:27 UTC Thu May 24 2018
+! Last configuration change at 16:20:28 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3050,7 +3064,7 @@ end</entry>
     <node name="SITE3-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="1038,368">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 09:30:52 UTC Thu May 24 2018
+! Last configuration change at 15:41:06 UTC Tue May 29 2018
 !
 version 15.6
 service timestamps debug datetime msec
