@@ -6,7 +6,7 @@
     <node name="MW-SAT-WAN" type="SIMPLE" subtype="IOSvL2" location="672,283">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:29:39 UTC Fri Jun 1 2018
+! Last configuration change at 23:08:52 UTC Wed Jun 6 2018
 !
 version 15.2
 service timestamps debug datetime msec
@@ -249,7 +249,7 @@ interface Management0/0
  shutdown
  no nameif
  no security-level
- ip address 172.16.1.146 255.255.255.0 
+ ip address 172.16.1.174 255.255.255.0 
 !
 ftp mode passive
 same-security-traffic permit intra-interface
@@ -295,12 +295,10 @@ crypto ipsec security-association pmtu-aging infinite
 crypto map AFPC-TO-SITE3-SATCOM 1 match address GRAYNET
 crypto map AFPC-TO-SITE3-SATCOM 1 set peer 192.168.1.102 
 crypto map AFPC-TO-SITE3-SATCOM 1 set ikev2 ipsec-proposal P1
-crypto map AFPC-TO-SITE3-SATCOM 1 set trustpoint SSL-Trustpoint
 crypto map AFPC-TO-SITE3-SATCOM interface outside-satcom
 crypto map AFPC-TO-SITE3-MW 1 match address GRAYNET
 crypto map AFPC-TO-SITE3-MW 1 set peer 192.168.0.2 
 crypto map AFPC-TO-SITE3-MW 1 set ikev2 ipsec-proposal P1
-crypto map AFPC-TO-SITE3-MW 1 set trustpoint SSL-Trustpoint
 crypto map AFPC-TO-SITE3-MW interface outside-microwave
 crypto ca trustpoint SSL-Trustpoint
  enrollment terminal
@@ -310,9 +308,6 @@ crypto ca trustpoint SSL-Trustpoint
  crl configure
 crypto ca trustpoint SSL-Trustpoint-1
  enrollment terminal
- crl configure
-crypto ca trustpoint _SmartCallHome_ServerCA
- no validation-usage
  crl configure
 crypto ca trustpool policy
  auto-import
@@ -415,51 +410,6 @@ crypto ca certificate chain SSL-Trustpoint-1
     784d39a3 48d74bd2 3864e9b4 c842a5f4 57fe3c11 21e06f54 4dd26403 3f153bda 
     86acce
   quit
-crypto ca certificate chain _SmartCallHome_ServerCA
- certificate ca 513fb9743870b73440418d30930699ff
-    30820538 30820420 a0030201 02021051 3fb97438 70b73440 418d3093 0699ff30 
-    0d06092a 864886f7 0d01010b 05003081 ca310b30 09060355 04061302 55533117 
-    30150603 55040a13 0e566572 69536967 6e2c2049 6e632e31 1f301d06 0355040b 
-    13165665 72695369 676e2054 72757374 204e6574 776f726b 313a3038 06035504 
-    0b133128 63292032 30303620 56657269 5369676e 2c20496e 632e202d 20466f72 
-    20617574 686f7269 7a656420 75736520 6f6e6c79 31453043 06035504 03133c56 
-    65726953 69676e20 436c6173 73203320 5075626c 69632050 72696d61 72792043 
-    65727469 66696361 74696f6e 20417574 686f7269 7479202d 20473530 1e170d31 
-    33313033 31303030 3030305a 170d3233 31303330 32333539 35395a30 7e310b30 
-    09060355 04061302 5553311d 301b0603 55040a13 1453796d 616e7465 6320436f 
-    72706f72 6174696f 6e311f30 1d060355 040b1316 53796d61 6e746563 20547275 
-    7374204e 6574776f 726b312f 302d0603 55040313 2653796d 616e7465 6320436c 
-    61737320 33205365 63757265 20536572 76657220 4341202d 20473430 82012230 
-    0d06092a 864886f7 0d010101 05000382 010f0030 82010a02 82010100 b2d805ca 
-    1c742db5 175639c5 4a520996 e84bd80c f1689f9a 422862c3 a530537e 5511825b 
-    037a0d2f e17904c9 b4967719 81019459 f9bcf77a 9927822d b783dd5a 277fb203 
-    7a9c5325 e9481f46 4fc89d29 f8be7956 f6f7fdd9 3a68da8b 4b823341 12c3c83c 
-    ccd6967a 84211a22 04032717 8b1c6861 930f0e51 80331db4 b5ceeb7e d062acee 
-    b37b0174 ef6935eb cad53da9 ee9798ca 8daa440e 25994a15 96a4ce6d 02541f2a 
-    6a26e206 3a6348ac b44cd175 9350ff13 2fd6dae1 c618f59f c9255df3 003ade26 
-    4db42909 cd0f3d23 6f164a81 16fbf283 10c3b8d6 d855323d f1bd0fbd 8c52954a 
-    16977a52 2163752f 16f9c466 bef5b509 d8ff2700 cd447c6f 4b3fb0f7 02030100 
-    01a38201 63308201 5f301206 03551d13 0101ff04 08300601 01ff0201 00303006 
-    03551d1f 04293027 3025a023 a021861f 68747470 3a2f2f73 312e7379 6d63622e 
-    636f6d2f 70636133 2d67352e 63726c30 0e060355 1d0f0101 ff040403 02010630 
-    2f06082b 06010505 07010104 23302130 1f06082b 06010505 07300186 13687474 
-    703a2f2f 73322e73 796d6362 2e636f6d 306b0603 551d2004 64306230 60060a60 
-    86480186 f8450107 36305230 2606082b 06010505 07020116 1a687474 703a2f2f 
-    7777772e 73796d61 7574682e 636f6d2f 63707330 2806082b 06010505 07020230 
-    1c1a1a68 7474703a 2f2f7777 772e7379 6d617574 682e636f 6d2f7270 61302906 
-    03551d11 04223020 a41e301c 311a3018 06035504 03131153 796d616e 74656350 
-    4b492d31 2d353334 301d0603 551d0e04 1604145f 60cf6190 55df8443 148a602a 
-    b2f57af4 4318ef30 1f060355 1d230418 30168014 7fd365a7 c2ddecbb f03009f3 
-    4339fa02 af333133 300d0609 2a864886 f70d0101 0b050003 82010100 5e945649 
-    dd8e2d65 f5c13651 b603e3da 9e7319f2 1f59ab58 7e6c2605 2cfa81d7 5c231722 
-    2c3793f7 86ec85e6 b0a3fd1f e232a845 6fe1d9fb b9afd270 a0324265 bf84fe16 
-    2a8f3fc5 a6d6a393 7d43e974 21913528 f463e92e edf7f55c 7f4b9ab5 20e90abd 
-    e045100c 14949a5d a5e34b91 e8249b46 4065f422 72cd99f8 8811f5f3 7fe63382 
-    e6a8c57e fed008e2 25580871 68e6cda2 e614de4e 52242dfd e5791353 e75e2f2d 
-    4d1b6d40 15522bf7 87897812 816ed94d aa2d78d4 c22c3d08 5f87919e 1f0eb0de 
-    30526486 89aa9d66 9c0e760c 80f274d8 2af8b83a ced7d60f 11be6bab 14f5bd41 
-    a0226389 f1ba0f6f 2963662d 3fac8c72 c5fbc7e4 d40ff23b 4f8c29c7
-  quit
 crypto isakmp identity address 
 crypto ikev2 policy 1
  encryption 3des
@@ -484,13 +434,13 @@ username all
 tunnel-group 192.168.0.2 type ipsec-l2l
 tunnel-group 192.168.0.2 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication certificate
- ikev2 local-authentication certificate SSL-Trustpoint
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
 tunnel-group 192.168.1.102 type ipsec-l2l
 tunnel-group 192.168.1.102 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication certificate
- ikev2 local-authentication certificate SSL-Trustpoint
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
 !
 class-map inspection_default
  match default-inspection-traffic
@@ -597,7 +547,7 @@ interface Management0/0
  shutdown
  no nameif
  no security-level
- ip address 172.16.1.151 255.255.255.0 
+ ip address 172.16.1.179 255.255.255.0 
 !
 ftp mode passive
 pager lines 23
@@ -769,6 +719,7 @@ interface GigabitEthernet0/0
  no ip address
 !
 interface GigabitEthernet0/1
+ description &lt;== SATCOM ==&gt;
  nameif outside-satcom
  security-level 0
  ip address 192.168.1.100 255.255.255.0 
@@ -789,7 +740,7 @@ interface Management0/0
  shutdown
  no nameif
  no security-level
- ip address 172.16.1.167 255.255.255.0 
+ ip address 172.16.1.195 255.255.255.0 
 !
 ftp mode passive
 access-list ACL1 extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
@@ -1114,7 +1065,7 @@ interface Management0/0
  shutdown
  no nameif
  no security-level
- ip address 172.16.1.162 255.255.255.0 
+ ip address 172.16.1.190 255.255.255.0 
 !
 ftp mode passive
 access-list ACL1 extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
@@ -1445,7 +1396,7 @@ interface Management0/0
  shutdown
  no nameif
  no security-level
- ip address 172.16.1.111 255.255.255.0 
+ ip address 172.16.1.185 255.255.255.0 
 !
 ftp mode passive
 same-security-traffic permit intra-interface
@@ -1493,30 +1444,23 @@ crypto ipsec security-association pmtu-aging infinite
 crypto map SITE3-TO-AFPC 1 match address GRAYNET
 crypto map SITE3-TO-AFPC 1 set peer 192.168.0.1 
 crypto map SITE3-TO-AFPC 1 set ikev2 ipsec-proposal P1
-crypto map SITE3-TO-AFPC 1 set trustpoint SSL-Trustpoint
 crypto map SITE3-TO-AFPC interface outside-microwave-to-afpc
 crypto map SITE3-TO-SITE4 1 match address GRAYNET
 crypto map SITE3-TO-SITE4 1 set peer 192.168.0.6 
 crypto map SITE3-TO-SITE4 1 set ikev2 ipsec-proposal P1
-crypto map SITE3-TO-SITE4 1 set trustpoint SSL-Trustpoint
 crypto map SITE3-TO-SITE4 interface outside-microwave-to-SITE4
 crypto map SITE3-TO-AFPC-SATCOM 1 match address GRAYNET
 crypto map SITE3-TO-AFPC-SATCOM 1 set peer 192.168.1.1 
 crypto map SITE3-TO-AFPC-SATCOM 1 set ikev2 ipsec-proposal P1
-crypto map SITE3-TO-AFPC-SATCOM 1 set trustpoint SSL-Trustpoint
 crypto map SITE3-TO-AFPC-SATCOM interface outside-satcom
 crypto ca trustpoint SSL-Trustpoint
  enrollment terminal
  fqdn SITE3-tb-or-01.36technology.com
  subject-name CN=SITE3-tb-or-01.36technology.com,O=36technology,C=US,St=Illiniois,L=Bloomington
- keypair SITE3-RSA-KEY
  ignore-ipsec-keyusage
  crl configure
 crypto ca trustpoint SSL-Trustpoint-1
  enrollment terminal
- crl configure
-crypto ca trustpoint _SmartCallHome_ServerCA
- no validation-usage
  crl configure
 crypto ca trustpool policy
  auto-import
@@ -1575,72 +1519,6 @@ crypto ca certificate chain SSL-Trustpoint
     25419be7 898aef5b 78b80579 b444f165 3cd99c06 3fdb5b71 d7df2807 3b0b611d 
     e57ccece 85fcf755 35dd213a 5840478c 205b0d7e 02d4b3fc 663222
   quit
- certificate 6200000018bbfd6456bea7c8a4000000000018
-    308207ee 308205d6 a0030201 02021362 00000018 bbfd6456 bea7c8a4 00000000 
-    0018300d 06092a86 4886f70d 01010505 00305231 13301106 0a099226 8993f22c 
-    64011916 03636f6d 311c301a 060a0992 268993f2 2c640119 160c3336 74656368 
-    6e6f6c6f 6779311d 301b0603 55040313 14333674 6563686e 6f6c6f67 792d4341 
-    30312d43 41301e17 0d313830 35323231 30353234 355a170d 31393035 31373031 
-    34353235 5a307831 0b300906 03550406 13025553 31123010 06035504 08130949 
-    6c6c696e 696f6973 31143012 06035504 07130b42 6c6f6f6d 696e6774 6f6e3115 
-    30130603 55040a13 0c333674 6563686e 6f6c6f67 79312830 26060355 0403131f 
-    73697465 332d7462 2d6f722d 30312e33 36746563 686e6f6c 6f67792e 636f6d30 
-    82022230 0d06092a 864886f7 0d010101 05000382 020f0030 82020a02 82020100 
-    b52d621d 6b89ef72 2b203fd8 715de21d 387ea4db afa23519 01e5f346 bd85b0f7 
-    805fe4b6 2a7b7b1c 60007cd3 0e3cbaa0 95bc567d 77549540 b320c86d af2f1d40 
-    e1d30dae 5c13a18d c701dd87 448234eb 2a98d619 a7e9650d 01c0d7ba 42f15f4a 
-    6e5a5a1a ebe867cb 59beeecb d18f4953 85dbd00c a9a321aa f10ddab1 0d8a4d8c 
-    3ad255d5 4de64a56 2b29b0bd fcf3e5f5 e9019b05 f33bf70d fc6c1279 97b5810d 
-    31b4bb4b 57e28200 06b36cfe 396a4418 ff8fe38f 36b6ac9c 8ea0d63b ca0d05a3 
-    10054891 288e8e52 d87c0be3 34c41620 c8a491c1 c53ee247 31c46cdb 017450f0 
-    6aeb3950 8d8dd7ee c5af7d96 bc1fd5ec b96e35cd 34062bb4 ce905bb7 ea0d3ead 
-    e095a239 2c85303e 0d7da1bf 1fad7f7f 036bc948 65acce7b 00f8f61f 928f469b 
-    2c1fb832 1badd628 76196d07 2879cee4 230f59cd 43386a6f 0ff6912e de276dcd 
-    efa9924f 3b32de21 4c9cfe55 3cff9539 5bbeaa4d 74f92647 4d754cba 71bb196f 
-    47d741bf a2a2adff c728ec2e 4dd68d61 95788e97 1a3f2926 030e31b2 2f0b0b9d 
-    6ccf8bd2 8f71116b 1cd30e78 2985d608 5d262dd2 7025abeb f7e82a87 972d88a5 
-    8c266687 cd525d84 1506f5f8 5e1d5961 320454f0 a1fcafdd 1549f1c5 6e584b34 
-    ed5ab22b 4fbe35c2 424f4a7d 355c3d52 d8ba8fe9 73e9b97e 0830c009 d07e6fe7 
-    9974ef7d 7ddbcb67 33f99f5b 0bea604b 4768ceaf 4b79daab fc233c20 4fbc0d61 
-    02030100 01a38202 95308202 91300e06 03551d0f 0101ff04 04030205 a0302a06 
-    03551d11 04233021 821f7369 7465332d 74622d6f 722d3031 2e333674 6563686e 
-    6f6c6f67 792e636f 6d301d06 03551d0e 04160414 f6737107 dbb1bc73 1d822062 
-    7f65a5b5 7b285f6f 301f0603 551d2304 18301680 141d6a78 300f23e9 4731ac59 
-    64d4b946 3cc67d6e ba3081d4 0603551d 1f0481cc 3081c930 81c6a081 c3a081c0 
-    8681bd6c 6461703a 2f2f2f43 4e3d3336 74656368 6e6f6c6f 67792d43 4130312d 
-    43412c43 4e3d6361 30312c43 4e3d4344 502c434e 3d507562 6c696325 32304b65 
-    79253230 53657276 69636573 2c434e3d 53657276 69636573 2c434e3d 436f6e66 
-    69677572 6174696f 6e2c4443 3d333674 6563686e 6f6c6f67 792c4443 3d636f6d 
-    3f636572 74696669 63617465 5265766f 63617469 6f6e4c69 73743f62 6173653f 
-    6f626a65 6374436c 6173733d 63524c44 69737472 69627574 696f6e50 6f696e74 
-    3081cb06 082b0601 05050701 010481be 3081bb30 81b80608 2b060105 05073002 
-    8681ab6c 6461703a 2f2f2f43 4e3d3336 74656368 6e6f6c6f 67792d43 4130312d 
-    43412c43 4e3d4149 412c434e 3d507562 6c696325 32304b65 79253230 53657276 
-    69636573 2c434e3d 53657276 69636573 2c434e3d 436f6e66 69677572 6174696f 
-    6e2c4443 3d333674 6563686e 6f6c6f67 792c4443 3d636f6d 3f634143 65727469 
-    66696361 74653f62 6173653f 6f626a65 6374436c 6173733d 63657274 69666963 
-    6174696f 6e417574 686f7269 7479303c 06092b06 01040182 37150704 2f302d06 
-    252b0601 04018237 150898b6 538795be 4e859989 358386d5 3e8587b8 3581538f 
-    c94882aa b71b0201 64020106 30130603 551d2504 0c300a06 082b0601 05050802 
-    02301b06 092b0601 04018237 150a040e 300c300a 06082b06 01050508 0202300d 
-    06092a86 4886f70d 01010505 00038202 01004dea a31e3c52 5bf6b963 6677baa3 
-    5c217ca6 8c4b7329 ab4916e1 32ab6ca0 c13507fe 3ace4b0c 4d1b8a00 7eb41c4d 
-    7c0b4e50 0eb0dbf5 c8739c97 7d1b5470 2ca7c2bf 52a98f3f 9b24f30e bef9876a 
-    30707037 a3d7daea 2a5640ab e9209879 fcd0416e b95d6406 de4c048d 32b661ef 
-    abe0fc9f e8eafd83 bb957fa0 f2576a7d 03f4fda6 4204c4b4 dda87099 ba4e6d8f 
-    16ac8c4d 59054658 dc0e077e 6470657a 04e2e563 a780dcd0 cdd1c6e9 5c111cd3 
-    a9fed113 415b93fb c9ccc301 65ca6c3d 54f0d35c 54a40315 10d3b727 a8828508 
-    1ba9e308 20f7e4b6 6a884358 c5abb93f 0f67ce77 a60830b9 b628abe1 f666176f 
-    d0fe1806 745201d5 b9bf46da 5e27e052 21b5e946 f483bed2 a6a8c0d1 3b528fa6 
-    3cfc89b9 4c662614 563121fa 182323e4 9d8a54a7 818de3a5 004ad759 50eaf3e4 
-    42962644 5ad12520 772c1642 b83b631b c21f88c9 0db1105d 80527ce7 9535bf37 
-    80e61e42 e387fc64 0ea98560 03856e15 e54d587d 88ded623 38868caf ec262067 
-    42ec9d58 eb2073db e597e9f5 930a44a1 f895c26a cc868519 eba89c4f 7543d580 
-    9001272c 85d1740f 4988805b d588fe80 ddd4e99b b08c81b4 f8ea4c16 6f3ca20c 
-    a2d0f220 f239075e 565ddf97 b2c36364 1f81cd45 ab83ea33 2c632254 28c4d806 
-    5d2993b1 4e500ad2 8b4d48cd e1c55fb3 d706d544 f750a5f9 e0178e72 d11d772e 
-    6eda7eeb d4b9ff0a 24966066 290a6552 f1c9
-  quit
 crypto ca certificate chain SSL-Trustpoint-1
  certificate ca 24a704524fdbc98c4c1692d94b94e350
     308204ff 308202e7 a0030201 02021024 a704524f dbc98c4c 1692d94b 94e35030 
@@ -1685,51 +1563,6 @@ crypto ca certificate chain SSL-Trustpoint-1
     784d39a3 48d74bd2 3864e9b4 c842a5f4 57fe3c11 21e06f54 4dd26403 3f153bda 
     86acce
   quit
-crypto ca certificate chain _SmartCallHome_ServerCA
- certificate ca 513fb9743870b73440418d30930699ff
-    30820538 30820420 a0030201 02021051 3fb97438 70b73440 418d3093 0699ff30 
-    0d06092a 864886f7 0d01010b 05003081 ca310b30 09060355 04061302 55533117 
-    30150603 55040a13 0e566572 69536967 6e2c2049 6e632e31 1f301d06 0355040b 
-    13165665 72695369 676e2054 72757374 204e6574 776f726b 313a3038 06035504 
-    0b133128 63292032 30303620 56657269 5369676e 2c20496e 632e202d 20466f72 
-    20617574 686f7269 7a656420 75736520 6f6e6c79 31453043 06035504 03133c56 
-    65726953 69676e20 436c6173 73203320 5075626c 69632050 72696d61 72792043 
-    65727469 66696361 74696f6e 20417574 686f7269 7479202d 20473530 1e170d31 
-    33313033 31303030 3030305a 170d3233 31303330 32333539 35395a30 7e310b30 
-    09060355 04061302 5553311d 301b0603 55040a13 1453796d 616e7465 6320436f 
-    72706f72 6174696f 6e311f30 1d060355 040b1316 53796d61 6e746563 20547275 
-    7374204e 6574776f 726b312f 302d0603 55040313 2653796d 616e7465 6320436c 
-    61737320 33205365 63757265 20536572 76657220 4341202d 20473430 82012230 
-    0d06092a 864886f7 0d010101 05000382 010f0030 82010a02 82010100 b2d805ca 
-    1c742db5 175639c5 4a520996 e84bd80c f1689f9a 422862c3 a530537e 5511825b 
-    037a0d2f e17904c9 b4967719 81019459 f9bcf77a 9927822d b783dd5a 277fb203 
-    7a9c5325 e9481f46 4fc89d29 f8be7956 f6f7fdd9 3a68da8b 4b823341 12c3c83c 
-    ccd6967a 84211a22 04032717 8b1c6861 930f0e51 80331db4 b5ceeb7e d062acee 
-    b37b0174 ef6935eb cad53da9 ee9798ca 8daa440e 25994a15 96a4ce6d 02541f2a 
-    6a26e206 3a6348ac b44cd175 9350ff13 2fd6dae1 c618f59f c9255df3 003ade26 
-    4db42909 cd0f3d23 6f164a81 16fbf283 10c3b8d6 d855323d f1bd0fbd 8c52954a 
-    16977a52 2163752f 16f9c466 bef5b509 d8ff2700 cd447c6f 4b3fb0f7 02030100 
-    01a38201 63308201 5f301206 03551d13 0101ff04 08300601 01ff0201 00303006 
-    03551d1f 04293027 3025a023 a021861f 68747470 3a2f2f73 312e7379 6d63622e 
-    636f6d2f 70636133 2d67352e 63726c30 0e060355 1d0f0101 ff040403 02010630 
-    2f06082b 06010505 07010104 23302130 1f06082b 06010505 07300186 13687474 
-    703a2f2f 73322e73 796d6362 2e636f6d 306b0603 551d2004 64306230 60060a60 
-    86480186 f8450107 36305230 2606082b 06010505 07020116 1a687474 703a2f2f 
-    7777772e 73796d61 7574682e 636f6d2f 63707330 2806082b 06010505 07020230 
-    1c1a1a68 7474703a 2f2f7777 772e7379 6d617574 682e636f 6d2f7270 61302906 
-    03551d11 04223020 a41e301c 311a3018 06035504 03131153 796d616e 74656350 
-    4b492d31 2d353334 301d0603 551d0e04 1604145f 60cf6190 55df8443 148a602a 
-    b2f57af4 4318ef30 1f060355 1d230418 30168014 7fd365a7 c2ddecbb f03009f3 
-    4339fa02 af333133 300d0609 2a864886 f70d0101 0b050003 82010100 5e945649 
-    dd8e2d65 f5c13651 b603e3da 9e7319f2 1f59ab58 7e6c2605 2cfa81d7 5c231722 
-    2c3793f7 86ec85e6 b0a3fd1f e232a845 6fe1d9fb b9afd270 a0324265 bf84fe16 
-    2a8f3fc5 a6d6a393 7d43e974 21913528 f463e92e edf7f55c 7f4b9ab5 20e90abd 
-    e045100c 14949a5d a5e34b91 e8249b46 4065f422 72cd99f8 8811f5f3 7fe63382 
-    e6a8c57e fed008e2 25580871 68e6cda2 e614de4e 52242dfd e5791353 e75e2f2d 
-    4d1b6d40 15522bf7 87897812 816ed94d aa2d78d4 c22c3d08 5f87919e 1f0eb0de 
-    30526486 89aa9d66 9c0e760c 80f274d8 2af8b83a ced7d60f 11be6bab 14f5bd41 
-    a0226389 f1ba0f6f 2963662d 3fac8c72 c5fbc7e4 d40ff23b 4f8c29c7
-  quit
 crypto isakmp identity address 
 crypto ikev2 policy 1
  encryption 3des
@@ -1755,18 +1588,18 @@ username all
 tunnel-group 192.168.0.1 type ipsec-l2l
 tunnel-group 192.168.0.1 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication certificate
- ikev2 local-authentication certificate SSL-Trustpoint
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
 tunnel-group 192.168.0.6 type ipsec-l2l
 tunnel-group 192.168.0.6 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication certificate
- ikev2 local-authentication certificate SSL-Trustpoint
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
 tunnel-group 192.168.1.1 type ipsec-l2l
 tunnel-group 192.168.1.1 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication certificate
- ikev2 local-authentication certificate SSL-Trustpoint
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
 !
 class-map inspection_default
  match default-inspection-traffic
@@ -1832,7 +1665,7 @@ call-home
     <node name="AFPC-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="405,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:31:26 UTC Fri Jun 1 2018
+! Last configuration change at 19:05:41 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -1891,7 +1724,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.142 255.255.255.0
+ ip address 172.16.1.170 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -1971,7 +1804,7 @@ end</entry>
     <node name="LUAY-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="757,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:31:38 UTC Fri Jun 1 2018
+! Last configuration change at 20:10:00 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2030,7 +1863,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.147 255.255.255.0
+ ip address 172.16.1.175 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2109,7 +1942,7 @@ end</entry>
     <node name="SITE5-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="917,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:32:58 UTC Fri Jun 1 2018
+! Last configuration change at 18:39:43 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2168,7 +2001,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.163 255.255.255.0
+ ip address 172.16.1.191 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2249,7 +2082,7 @@ end</entry>
     <node name="SITE4-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="603,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:32:41 UTC Fri Jun 1 2018
+! Last configuration change at 19:05:03 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2308,7 +2141,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.158 255.255.255.0
+ ip address 172.16.1.186 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2388,7 +2221,7 @@ end</entry>
     <node name="SITE3-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="273,468">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:32:16 UTC Fri Jun 1 2018
+! Last configuration change at 18:28:13 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2447,7 +2280,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.153 255.255.255.0
+ ip address 172.16.1.181 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2526,7 +2359,7 @@ end</entry>
     <node name="AFPC-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="566,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:31:39 UTC Fri Jun 1 2018
+! Last configuration change at 19:20:17 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2576,16 +2409,35 @@ redundancy
 !
 !
 !
+crypto ikev2 keyring KEYS
+ peer SITE3
+  address 172.16.3.6
+  pre-shared-key cisco
+ !
+!
+!
+crypto ikev2 profile P1
+ match identity remote address 172.16.3.6 255.255.255.255 
+ authentication local pre-share
+ authentication remote pre-share
+ keyring local KEYS
 !
 !
 !
+!
+!
+!
+crypto map SITE3-CRYPTO-MAP 10 ipsec-isakmp 
+ set peer 172.16.3.6
+ set ikev2-profile P1
+ match address OPS-NET
 !
 !
 !
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.144 255.255.255.0
+ ip address 172.16.1.172 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2597,6 +2449,7 @@ interface GigabitEthernet0/1
  duplex auto
  speed auto
  media-type rj45
+ crypto map SITE3-CRYPTO-MAP
 !
 interface GigabitEthernet0/2
  description &lt;== Connection to AFPC-OPS-SRV-01 ==&gt;
@@ -2614,9 +2467,14 @@ ip route 0.0.0.0 0.0.0.0 172.16.0.5
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
+ip access-list extended OPS-NET
+ permit ip 10.0.0.0 0.127.255.255 10.0.0.0 0.127.255.255
+!
 ipv6 ioam timestamp
 !
 !
+access-list 100 permit ip 10.0.0.0 0.127.255.255 10.0.0.0 0.127.255.255
+access-list 100 deny   ip any any log
 !
 control-plane
 !
@@ -2664,7 +2522,7 @@ end</entry>
     <node name="LUAY-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="907,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:31:51 UTC Fri Jun 1 2018
+! Last configuration change at 19:55:39 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2723,7 +2581,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.149 255.255.255.0
+ ip address 172.16.1.177 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2802,7 +2660,7 @@ end</entry>
     <node name="SITE5-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="1057,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:33:05 UTC Fri Jun 1 2018
+! Last configuration change at 19:40:22 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2861,7 +2719,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.165 255.255.255.0
+ ip address 172.16.1.193 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2941,7 +2799,7 @@ end</entry>
     <node name="SITE4-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="735,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:32:50 UTC Fri Jun 1 2018
+! Last configuration change at 18:28:10 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3000,7 +2858,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.160 255.255.255.0
+ ip address 172.16.1.188 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -3079,7 +2937,7 @@ end</entry>
     <node name="SITE3-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="415,468">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:32:46 UTC Fri Jun 1 2018
+! Last configuration change at 19:41:58 UTC Thu Jun 7 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3129,16 +2987,35 @@ redundancy
 !
 !
 !
+crypto ikev2 keyring KEYS
+ peer AFPC
+  address 172.16.0.6
+  pre-shared-key cisco
+ !
+!
+!
+crypto ikev2 profile P1
+ match identity remote address 172.16.0.6 255.255.255.255 
+ authentication local pre-share
+ authentication remote pre-share
+ keyring local KEYS
 !
 !
 !
+!
+!
+!
+crypto map AFPC-CRYPTO-MAP 10 ipsec-isakmp 
+ set peer 172.16.0.6
+ set ikev2-profile P1
+ match address OPS-NET
 !
 !
 !
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.155 255.255.255.0
+ ip address 172.16.1.183 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -3150,6 +3027,7 @@ interface GigabitEthernet0/1
  duplex auto
  speed auto
  media-type rj45
+ crypto map AFPC-CRYPTO-MAP
 !
 interface GigabitEthernet0/2
  description &lt;== Connection to SITE3-OPS-SRV-01 ==&gt;
@@ -3166,6 +3044,9 @@ no ip http secure-server
 ip route 0.0.0.0 0.0.0.0 172.16.3.5
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ip access-list extended OPS-NET
+ permit ip 10.0.0.0 0.127.255.255 10.0.0.0 0.127.255.255
 !
 ipv6 ioam timestamp
 !
