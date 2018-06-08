@@ -1,0 +1,3722 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.95" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.95/virl.xsd">
+    <extensions>
+        <entry key="management_network" type="String">flat</entry>
+    </extensions>
+    <node name="MW-SAT-WAN" type="SIMPLE" subtype="IOSvL2" location="672,283">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 23:08:52 UTC Wed Jun 6 2018
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname MW-SAT-WAN
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+vtp mode transparent
+!
+!
+!
+no ip domain-lookup
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+vlan 10
+ name SATCOM
+!
+vlan 100
+ name AFPC_TO_SITE3
+!
+vlan 101
+ name SITE3_TO_SITE4
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ description &lt;== MW Connection AFPC &lt;-&gt; SITE3 ==&gt;
+ switchport access vlan 100
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ description &lt;== MW Connection SITE4 &lt;-&gt; SITE3 ==&gt;
+ switchport access vlan 101
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ description &lt;== MW Connection SITE3 &lt;-&gt; AFPC ==&gt;
+ switchport access vlan 100
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet1/0
+ description &lt;== MW Connection SITE3 &lt;-&gt; SITE4 ==&gt;
+ switchport access vlan 101
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet1/1
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet1/2
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet1/3
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet2/0
+ description &lt;== SATCOM Connection ==&gt;
+ switchport access vlan 10
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet2/1
+ description &lt;== SATCOM Connection ==&gt;
+ switchport access vlan 10
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet2/2
+ description &lt;== SATCOM Connection ==&gt;
+ switchport access vlan 10
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet2/3
+ description &lt;== SATCOM Connection ==&gt;
+ switchport access vlan 10
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet3/0
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet3/1
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet3/2
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet3/3
+ media-type rj45
+ negotiation auto
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+!
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+        <interface id="3" name="GigabitEthernet1/0"/>
+        <interface id="4" name="GigabitEthernet1/1"/>
+        <interface id="7" name="GigabitEthernet2/0"/>
+        <interface id="8" name="GigabitEthernet2/1"/>
+        <interface id="9" name="GigabitEthernet2/2"/>
+        <interface id="10" name="GigabitEthernet2/3"/>
+        <interface id="14" name="GigabitEthernet3/3"/>
+    </node>
+    <node name="AFPC-TB-OR-01" type="SIMPLE" subtype="ASAv" location="490,211">
+        <extensions>
+            <entry key="config" type="String">!
+ASA Version 9.8(2) 
+!
+hostname AFPC-TB-OR-01
+enable password $sha512$5000$+MnAhPxJCs/9DvUsueaZmw==$6ozl1wHddnAYRTScMCyW5g== pbkdf2
+xlate per-session deny tcp any4 any4
+xlate per-session deny tcp any4 any6
+xlate per-session deny tcp any6 any4
+xlate per-session deny tcp any6 any6
+xlate per-session deny udp any4 any4 eq domain
+xlate per-session deny udp any4 any6 eq domain
+xlate per-session deny udp any6 any4 eq domain
+xlate per-session deny udp any6 any6 eq domain
+names
+
+!
+interface GigabitEthernet0/0
+ description &lt;== Connection to SITE3-TB-OR-01 G0/1 ==&gt;
+ nameif outside-microwave
+ security-level 0
+ ip address 192.168.0.1 255.255.255.252 
+!
+interface GigabitEthernet0/1
+ description &lt;== Connection to SATCOM ==&gt;
+ nameif outside-satcom
+ security-level 0
+ ip address 192.168.1.1 255.255.255.0 
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to AFPC-ADM-IR-01 G0/1 ==&gt;
+ nameif inside-adm
+ security-level 100
+ ip address 172.16.0.1 255.255.255.252 
+!
+interface GigabitEthernet0/3
+ description &lt;== Connection to AFPC-OPS-IR-01 G0/1 ==&gt;
+ nameif inside-ops
+ security-level 100
+ ip address 172.16.0.5 255.255.255.252 
+!
+interface Management0/0
+ shutdown
+ no nameif
+ no security-level
+ ip address 172.16.1.174 255.255.255.0 
+!
+ftp mode passive
+same-security-traffic permit intra-interface
+access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
+pager lines 23
+mtu outside-microwave 1500
+mtu outside-satcom 1500
+mtu inside-adm 1500
+mtu inside-ops 1500
+no failover
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 8192
+route outside-microwave 172.16.3.0 255.255.255.0 192.168.0.2 1 track 1
+route outside-satcom 172.16.3.0 255.255.255.0 192.168.1.102 254
+route outside-microwave 172.16.4.0 255.255.255.0 192.168.0.2 1
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+user-identity default-domain LOCAL
+aaa authentication login-history
+no snmp-server location
+no snmp-server contact
+sla monitor 123
+ type echo protocol ipIcmpEcho 192.168.0.2 interface outside-microwave
+ num-packets 3
+ frequency 10
+sla monitor schedule 123 life forever start-time now
+crypto ipsec ikev2 ipsec-proposal P1
+ protocol esp encryption aes 3des des
+ protocol esp integrity sha-1
+crypto ipsec security-association pmtu-aging infinite
+crypto map AFPC-TO-SITE3-SATCOM 1 match address GRAYNET
+crypto map AFPC-TO-SITE3-SATCOM 1 set peer 192.168.1.102 
+crypto map AFPC-TO-SITE3-SATCOM 1 set ikev2 ipsec-proposal P1
+crypto map AFPC-TO-SITE3-SATCOM interface outside-satcom
+crypto map AFPC-TO-SITE3-MW 1 match address GRAYNET
+crypto map AFPC-TO-SITE3-MW 1 set peer 192.168.0.2 
+crypto map AFPC-TO-SITE3-MW 1 set ikev2 ipsec-proposal P1
+crypto map AFPC-TO-SITE3-MW interface outside-microwave
+crypto ca trustpoint SSL-Trustpoint
+ enrollment terminal
+ fqdn afpc-tb-or-01.36technology.com
+ subject-name CN=afpc-tb-or-01.36technology.com,O=36technology,C=US,St=Illiniois,L=Bloomington
+ ignore-ipsec-keyusage
+ crl configure
+crypto ca trustpoint SSL-Trustpoint-1
+ enrollment terminal
+ crl configure
+crypto ca trustpool policy
+ auto-import
+crypto ca certificate chain SSL-Trustpoint
+ certificate ca 1e00000002f37ee172c075e0e8000000000002
+    30820677 3082045f a0030201 0202131e 00000002 f37ee172 c075e0e8 00000000 
+    0002300d 06092a86 4886f70d 01010505 00301231 10300e06 03550403 13074f52 
+    43412d43 41301e17 0d313830 35313730 31333532 355a170d 31393035 31373031 
+    34353235 5a305231 13301106 0a099226 8993f22c 64011916 03636f6d 311c301a 
+    060a0992 268993f2 2c640119 160c3336 74656368 6e6f6c6f 6779311d 301b0603 
+    55040313 14333674 6563686e 6f6c6f67 792d4341 30312d43 41308202 22300d06 
+    092a8648 86f70d01 01010500 0382020f 00308202 0a028202 0100def9 5999c617 
+    f7641a54 3655a140 50087a80 b7f23a5f 40bcdf49 1e2f3b75 9f069fa8 59f4f269 
+    1fb7020e 345b5154 b79eb5a8 40ec7429 7df57b23 e189e741 e38b186c 92535c8f 
+    155f4200 b4a9b72e df61eca6 db9bba19 c4641003 189024de 509597f3 cdda39d4 
+    8e9e1342 ab3d3b86 297b2d5f e9631f68 aaedfebe c36de4bf 33df1cdf 3228d990 
+    3b398b0b 686248d3 c56d7434 25c733af b935ce35 0238b320 cfd4f291 283d960a 
+    f092af5a 4c8996c8 97a3afff e7ccdbcb d6efbb1c 3bff2ff3 8da5e8bf 502e199f 
+    6b5f1042 2dc90692 63e12a60 754326a7 d6f3e922 b77b4782 c24575ba 94a455f1 
+    f2d953ef ba9e011a a82e834c 97a4358c 7d7c49d8 90ec83ee b3f25641 063ec7bc 
+    18366d65 71680906 20a5a154 c8705db7 4207cbb9 20d90795 ae39c65c 297214cb 
+    535b0325 b97be5ad 5945e02c a86becfd 63affcc6 2fb1a6ca 1e34dca6 06c33ce2 
+    5524d4da 8261d98c a6a8cffe 612af879 102f83b7 d5469c26 833296d8 5474f108 
+    6ae262b3 4f9a48ff 9f822a21 4b55780d f6b6d761 0a07a5d0 0936cf35 e916f3ff 
+    97d66fe3 813d600b babee949 6641832a 65d16791 ca38d3e4 5c1a6159 cfc29a0b 
+    86ee1f9f 4aec3884 9f126300 8b2e6608 7b608b06 da5add04 9f95224a 1d0094a0 
+    9988f72d ddf1afb0 17cb46e9 81605d75 ce763fde 3984dad0 82cbf7a9 0db46144 
+    56347dce ed730633 41ce9a8e 9f91de67 1ed8e787 806f2e65 b3970203 010001a3 
+    82018430 82018030 1006092b 06010401 82371501 04030201 00301d06 03551d0e 
+    04160414 1d6a7830 0f23e947 31ac5964 d4b9463c c67d6eba 30190609 2b060104 
+    01823714 02040c1e 0a005300 75006200 43004130 0b060355 1d0f0404 03020186 
+    300f0603 551d1301 01ff0405 30030101 ff301f06 03551d23 04183016 8014c0e9 
+    196d9fc9 ffd6038a 3541b4ea 3b555e1e b6b43068 0603551d 1f046130 5f305da0 
+    5ba05986 2466696c 653a2f2f 2f2f4f52 43412f43 65727445 6e726f6c 6c2f4f52 
+    43412d43 412e6372 6c863168 7474703a 2f2f6361 30312e33 36746563 686e6f6c 
+    6f67792e 636f6d2f 63657274 64617461 2f4f5243 412d4341 2e63726c 30818806 
+    082b0601 05050701 01047c30 7a303506 082b0601 05050730 02862966 696c653a 
+    2f2f2f2f 4f524341 2f436572 74456e72 6f6c6c2f 4f524341 5f4f5243 412d4341 
+    2e637274 30410608 2b060105 05073002 86356874 74703a2f 2f636130 312e3336 
+    74656368 6e6f6c6f 67792e63 6f6d2f63 65727464 6174612f 4f524341 4f524341 
+    2d43412e 63727430 0d06092a 864886f7 0d010105 05000382 02010027 1ad3f3e9 
+    10a94e6c ab524ac8 c2210de8 56ef315a 51c21b5c d6b4ce00 2c1308ee 4fe88531 
+    d570e1a5 b2bce572 a14658d5 34f6b387 b85f8847 048a1e5f 23414933 5307c597 
+    b81c2d80 9c707879 684295f7 62273d8d b25a755f e97662d7 d2007890 056a4493 
+    16f49748 59441dba c9680874 3eb6d741 2e866e86 cc4bc75e 7a365894 d75832f3 
+    ac34c9f9 50696c49 874c0300 828e141e 46c1726a 2b3bab89 7ed701eb 5b05364e 
+    313ec048 e68fc19a c10b71a4 bafca94e 8c13035a ccca1b54 3bd49e95 1252c0e1 
+    3956c700 d29ff2d7 e85344b5 e6e17ac9 06d8643c f11a3c40 b333c192 a32ec82b 
+    cc355b91 1a030a48 e39f8a43 0e5305a6 5b899777 0443b57a 8cef52a4 dcf8c4de 
+    489ecf6a b0683d0d a38c090c 7e1b6b37 7b5a8b8a c458986f 2d925afa deb71859 
+    e04247e8 cf182008 7a215e60 9632f741 061cd7a8 b55f2c02 9406d5fc d8d01e33 
+    a3aa7bf9 a5a7ac65 0cc389be 37c79848 6efd9e12 67a1caae 5a76cc70 ebbd8e3f 
+    5f4c494c edc9de37 2c973401 6d496702 555bba45 17b15fba 87c205f0 0c1b59c6 
+    0a7e6ef4 e1998e62 6bd1b7be 5eacec9f e4aba5cd 05f283b8 57401629 7283ff95 
+    118dbf5f 7a1e83be 506e6b4c 6fdd80ae 68195703 f4c08cf6 7647fe56 ea710a2f 
+    25419be7 898aef5b 78b80579 b444f165 3cd99c06 3fdb5b71 d7df2807 3b0b611d 
+    e57ccece 85fcf755 35dd213a 5840478c 205b0d7e 02d4b3fc 663222
+  quit
+crypto ca certificate chain SSL-Trustpoint-1
+ certificate ca 24a704524fdbc98c4c1692d94b94e350
+    308204ff 308202e7 a0030201 02021024 a704524f dbc98c4c 1692d94b 94e35030 
+    0d06092a 864886f7 0d010105 05003012 3110300e 06035504 0313074f 5243412d 
+    4341301e 170d3138 30353136 30323034 33375a17 0d323330 35313630 32313433 
+    355a3012 3110300e 06035504 0313074f 5243412d 43413082 0222300d 06092a86 
+    4886f70d 01010105 00038202 0f003082 020a0282 020100b6 be4642c3 3f481107 
+    92f3df80 f1cb3734 80a4ae54 7e0c4c5a 438c93d3 bcec4203 fc8df8af be8d691a 
+    5858baf8 c4657c25 bbd2b10f 2b5422ba 52582c66 ecf36326 7caa7a92 704ee4bf 
+    6e794f8f f7129bbc 7c422d14 ac93c72a 37f99362 d023b743 bf0caa01 56d7cef4 
+    97071937 577d8834 d3d0142c 7baafc03 8e954c31 64c6a0c7 549acca2 b6199a42 
+    afc70a0a 8bb4087d 4d364c02 a56fc3c1 a3bfff22 e8577910 53106829 5467d9fe 
+    d21486d1 15265535 72750bfa 274c4746 278190c1 2c4bffa4 cdc2fbd0 21d8eff9 
+    8a4a4331 fda5010e 46e8f168 2c571419 fb720415 6433d833 4eea3ec4 21f83fcc 
+    b4a3cb5c 404c851d 74262fb0 4dc6ba1b 7c00ab2f 548528c5 32087220 7ad9b0ca 
+    2702aefb cfafa647 461f199e c0377373 ef394b3a 35854159 79f73174 8273a44c 
+    d82501fd 5c282df4 4caf9b5c fec256b8 b5d28d0f 12de2e80 40d23a17 ca4f38ed 
+    dbe2ed2a fbdddaf6 47bd55cc eaa262eb b19fabab 6ea567e3 67c6728a d1b47550 
+    9b6857e8 d714d636 807e85ff 7ec35b26 eac7ac7f 0753daca ad2388e0 6824b29e 
+    6775f4aa 56c537fa 1411a3f1 f9afae1e e9408911 b0ece7a4 cd7acba8 f9807ca2 
+    85e319c6 7e6117e7 28e8c431 5fbb3846 939a2338 86875dd1 17d18f02 5bb47818 
+    f6ba1a8f 0ce48b96 1c006799 bd703239 6abc3538 9aa93d0d ef1d0219 27a9b079 
+    552ebb49 9445aa1f 76a35def d2f7383d 4f87e427 8f5f0f02 03010001 a351304f 
+    300b0603 551d0f04 04030201 86300f06 03551d13 0101ff04 05300301 01ff301d 
+    0603551d 0e041604 14c0e919 6d9fc9ff d6038a35 41b4ea3b 555e1eb6 b4301006 
+    092b0601 04018237 15010403 02010030 0d06092a 864886f7 0d010105 05000382 
+    02010060 ce18ead7 b336cba5 5bba4d86 be113d5e 06f524d2 cf05f9f3 f76ec2db 
+    d9f0cb27 63dd78ce 3f26af48 64090d29 92ed403f b879e467 84e8a20b 98c5b3db 
+    ccd486b1 7cf134f8 965e1d78 8209c4e4 937cac66 7e46bd58 096016e0 317c04af 
+    319f20cb 69146e1e b47cd52e 3faf51f1 c9d12811 9624c85a fca1c48c 66ae4c6a 
+    59348f48 e394fe41 2e77570f 4bcf118b 6b17a628 f9887f82 6112c36d 7e40fa8f 
+    886362ef 6cfc72c8 2ef04f7b 9bcaee12 ffb14168 afa19e73 8e32b42c 9aec2360 
+    dccec725 d7e65ced 1348d09a c7d8346b 4f76aeac 3f5d8fcf c75ec9c9 47ea1a67 
+    977d6cc4 4118e773 91b65d7f ed617471 50538355 e2f09756 6e505a48 c486a72c 
+    472952b1 2f1d68e3 1176a1f7 ec8b2a68 a3077133 8e2b4d0f cb111a09 7f37f15a 
+    05fb5145 19ab5d1b 8eaa0258 0dc7756f 9d979c80 6bd354f1 943514f5 619f67d0 
+    8032ae98 db0bc402 0fb350a9 05f55fc0 30e28c7e 9bdb7b04 36803c72 1479e9bd 
+    99483a14 98a6eebb c4de2ef3 70cfc23b 886b40b4 fcbbb5f9 f991740b 43935b8c 
+    e0755014 90cf63d3 81a82dd1 d3c9798d c5e53180 4fa7e5db 6b9bf98b 6a574f42 
+    66ebe7f5 f846f897 ff8def82 5613c13a 10e6f30b 97597c61 e43c37a2 01531126 
+    f796f263 eef1021c fa374b16 03dd73de 34e9bada 11763f32 e961353e af929580 
+    784d39a3 48d74bd2 3864e9b4 c842a5f4 57fe3c11 21e06f54 4dd26403 3f153bda 
+    86acce
+  quit
+crypto isakmp identity address 
+crypto ikev2 policy 1
+ encryption 3des
+ integrity sha
+ group 2
+ prf sha
+ lifetime seconds 43200
+crypto ikev2 enable outside-microwave
+crypto ikev2 enable outside-satcom
+!
+track 1 rtr 123 reachability
+telnet timeout 5
+ssh stricthostkeycheck
+ssh timeout 5
+ssh key-exchange group dh-group1-sha1
+console timeout 0
+threat-detection basic-threat
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+dynamic-access-policy-record DfltAccessPolicy
+username all
+tunnel-group 192.168.0.2 type ipsec-l2l
+tunnel-group 192.168.0.2 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
+tunnel-group 192.168.1.102 type ipsec-l2l
+tunnel-group 192.168.1.102 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
+!
+class-map inspection_default
+ match default-inspection-traffic
+!
+!
+policy-map type inspect dns preset_dns_map
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map global_policy
+ class inspection_default
+  inspect ip-options 
+  inspect netbios 
+  inspect rtsp 
+  inspect sunrpc 
+  inspect tftp 
+  inspect xdmcp 
+  inspect dns preset_dns_map 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect rsh 
+  inspect esmtp 
+  inspect sqlnet 
+  inspect sip  
+  inspect skinny  
+policy-map type inspect dns migrated_dns_map_2
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map type inspect dns migrated_dns_map_1
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+!
+service-policy global_policy global
+prompt hostname context 
+no call-home reporting anonymous
+call-home
+ profile CiscoTAC-1
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination transport-method http
+  subscribe-to-alert-group diagnostic
+  subscribe-to-alert-group environment
+  subscribe-to-alert-group inventory periodic monthly
+  subscribe-to-alert-group configuration periodic monthly
+  subscribe-to-alert-group telemetry periodic daily
+ profile License
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination transport-method http</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0"/>
+        <interface id="1" name="GigabitEthernet0/1"/>
+        <interface id="2" name="GigabitEthernet0/2"/>
+        <interface id="3" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="LUAY-TB-OR-01" type="SIMPLE" subtype="ASAv" location="829,211">
+        <extensions>
+            <entry key="config" type="String">!
+ASA Version 9.8(2) 
+!
+hostname LUAY-TB-OR-01
+enable password $sha512$5000$1Dgq68P1I0yAA0kJXwlAKg==$QhgyTyejIop1pB21WTsDhQ== pbkdf2
+xlate per-session deny tcp any4 any4
+xlate per-session deny tcp any4 any6
+xlate per-session deny tcp any6 any4
+xlate per-session deny tcp any6 any6
+xlate per-session deny udp any4 any4 eq domain
+xlate per-session deny udp any4 any6 eq domain
+xlate per-session deny udp any6 any4 eq domain
+xlate per-session deny udp any6 any6 eq domain
+names
+
+!
+interface GigabitEthernet0/0
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/1
+ nameif outside-satcom
+ security-level 0
+ ip address 192.168.1.2 255.255.255.0 
+!
+interface GigabitEthernet0/2
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/3
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Management0/0
+ shutdown
+ no nameif
+ no security-level
+ ip address 172.16.1.179 255.255.255.0 
+!
+ftp mode passive
+pager lines 23
+mtu outside-satcom 1500
+no failover
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 8192
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+user-identity default-domain LOCAL
+aaa authentication login-history
+no snmp-server location
+no snmp-server contact
+crypto ipsec security-association pmtu-aging infinite
+crypto ca trustpoint _SmartCallHome_ServerCA
+ no validation-usage
+ crl configure
+crypto ca trustpool policy
+ auto-import
+crypto ca certificate chain _SmartCallHome_ServerCA
+ certificate ca 513fb9743870b73440418d30930699ff
+    30820538 30820420 a0030201 02021051 3fb97438 70b73440 418d3093 0699ff30 
+    0d06092a 864886f7 0d01010b 05003081 ca310b30 09060355 04061302 55533117 
+    30150603 55040a13 0e566572 69536967 6e2c2049 6e632e31 1f301d06 0355040b 
+    13165665 72695369 676e2054 72757374 204e6574 776f726b 313a3038 06035504 
+    0b133128 63292032 30303620 56657269 5369676e 2c20496e 632e202d 20466f72 
+    20617574 686f7269 7a656420 75736520 6f6e6c79 31453043 06035504 03133c56 
+    65726953 69676e20 436c6173 73203320 5075626c 69632050 72696d61 72792043 
+    65727469 66696361 74696f6e 20417574 686f7269 7479202d 20473530 1e170d31 
+    33313033 31303030 3030305a 170d3233 31303330 32333539 35395a30 7e310b30 
+    09060355 04061302 5553311d 301b0603 55040a13 1453796d 616e7465 6320436f 
+    72706f72 6174696f 6e311f30 1d060355 040b1316 53796d61 6e746563 20547275 
+    7374204e 6574776f 726b312f 302d0603 55040313 2653796d 616e7465 6320436c 
+    61737320 33205365 63757265 20536572 76657220 4341202d 20473430 82012230 
+    0d06092a 864886f7 0d010101 05000382 010f0030 82010a02 82010100 b2d805ca 
+    1c742db5 175639c5 4a520996 e84bd80c f1689f9a 422862c3 a530537e 5511825b 
+    037a0d2f e17904c9 b4967719 81019459 f9bcf77a 9927822d b783dd5a 277fb203 
+    7a9c5325 e9481f46 4fc89d29 f8be7956 f6f7fdd9 3a68da8b 4b823341 12c3c83c 
+    ccd6967a 84211a22 04032717 8b1c6861 930f0e51 80331db4 b5ceeb7e d062acee 
+    b37b0174 ef6935eb cad53da9 ee9798ca 8daa440e 25994a15 96a4ce6d 02541f2a 
+    6a26e206 3a6348ac b44cd175 9350ff13 2fd6dae1 c618f59f c9255df3 003ade26 
+    4db42909 cd0f3d23 6f164a81 16fbf283 10c3b8d6 d855323d f1bd0fbd 8c52954a 
+    16977a52 2163752f 16f9c466 bef5b509 d8ff2700 cd447c6f 4b3fb0f7 02030100 
+    01a38201 63308201 5f301206 03551d13 0101ff04 08300601 01ff0201 00303006 
+    03551d1f 04293027 3025a023 a021861f 68747470 3a2f2f73 312e7379 6d63622e 
+    636f6d2f 70636133 2d67352e 63726c30 0e060355 1d0f0101 ff040403 02010630 
+    2f06082b 06010505 07010104 23302130 1f06082b 06010505 07300186 13687474 
+    703a2f2f 73322e73 796d6362 2e636f6d 306b0603 551d2004 64306230 60060a60 
+    86480186 f8450107 36305230 2606082b 06010505 07020116 1a687474 703a2f2f 
+    7777772e 73796d61 7574682e 636f6d2f 63707330 2806082b 06010505 07020230 
+    1c1a1a68 7474703a 2f2f7777 772e7379 6d617574 682e636f 6d2f7270 61302906 
+    03551d11 04223020 a41e301c 311a3018 06035504 03131153 796d616e 74656350 
+    4b492d31 2d353334 301d0603 551d0e04 1604145f 60cf6190 55df8443 148a602a 
+    b2f57af4 4318ef30 1f060355 1d230418 30168014 7fd365a7 c2ddecbb f03009f3 
+    4339fa02 af333133 300d0609 2a864886 f70d0101 0b050003 82010100 5e945649 
+    dd8e2d65 f5c13651 b603e3da 9e7319f2 1f59ab58 7e6c2605 2cfa81d7 5c231722 
+    2c3793f7 86ec85e6 b0a3fd1f e232a845 6fe1d9fb b9afd270 a0324265 bf84fe16 
+    2a8f3fc5 a6d6a393 7d43e974 21913528 f463e92e edf7f55c 7f4b9ab5 20e90abd 
+    e045100c 14949a5d a5e34b91 e8249b46 4065f422 72cd99f8 8811f5f3 7fe63382 
+    e6a8c57e fed008e2 25580871 68e6cda2 e614de4e 52242dfd e5791353 e75e2f2d 
+    4d1b6d40 15522bf7 87897812 816ed94d aa2d78d4 c22c3d08 5f87919e 1f0eb0de 
+    30526486 89aa9d66 9c0e760c 80f274d8 2af8b83a ced7d60f 11be6bab 14f5bd41 
+    a0226389 f1ba0f6f 2963662d 3fac8c72 c5fbc7e4 d40ff23b 4f8c29c7
+  quit
+telnet timeout 5
+ssh stricthostkeycheck
+ssh timeout 5
+ssh key-exchange group dh-group1-sha1
+console timeout 0
+threat-detection basic-threat
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+dynamic-access-policy-record DfltAccessPolicy
+!
+class-map inspection_default
+ match default-inspection-traffic
+!
+!
+policy-map type inspect dns preset_dns_map
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map global_policy
+ class inspection_default
+  inspect ip-options 
+  inspect netbios 
+  inspect rtsp 
+  inspect sunrpc 
+  inspect tftp 
+  inspect xdmcp 
+  inspect dns preset_dns_map 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect rsh 
+  inspect esmtp 
+  inspect sqlnet 
+  inspect sip  
+  inspect skinny  
+policy-map type inspect dns migrated_dns_map_2
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map type inspect dns migrated_dns_map_1
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+!
+service-policy global_policy global
+prompt hostname context 
+no call-home reporting anonymous
+call-home
+ profile CiscoTAC-1
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination transport-method http
+  subscribe-to-alert-group diagnostic
+  subscribe-to-alert-group environment
+  subscribe-to-alert-group inventory periodic monthly
+  subscribe-to-alert-group configuration periodic monthly
+  subscribe-to-alert-group telemetry periodic daily
+ profile License
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination transport-method http</entry>
+        </extensions>
+        <interface id="1" name="GigabitEthernet0/1"/>
+        <interface id="2" name="GigabitEthernet0/2"/>
+        <interface id="3" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="SITE5-TB-OR-01" type="SIMPLE" subtype="ASAv" location="1003,394">
+        <extensions>
+            <entry key="config" type="String">!
+ASA Version 9.8(2) 
+!
+hostname SITE5-TB-OR-01
+enable password $sha512$5000$vh6lmanS86ngno1ty+JcpQ==$88iPwKz22vk0DGxy0WNkCw== pbkdf2
+xlate per-session deny tcp any4 any4
+xlate per-session deny tcp any4 any6
+xlate per-session deny tcp any6 any4
+xlate per-session deny tcp any6 any6
+xlate per-session deny udp any4 any4 eq domain
+xlate per-session deny udp any4 any6 eq domain
+xlate per-session deny udp any6 any4 eq domain
+xlate per-session deny udp any6 any6 eq domain
+names
+
+!
+interface GigabitEthernet0/0
+ description &lt;== NO MICROWAVE ==&gt;
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/1
+ description &lt;== SATCOM ==&gt;
+ nameif outside-satcom
+ security-level 0
+ ip address 192.168.1.100 255.255.255.0 
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to SITE5-ADM-IR-01 G0/1 ==&gt;
+ nameif inside-adm
+ security-level 100
+ ip address 172.16.5.1 255.255.255.252 
+!
+interface GigabitEthernet0/3
+ description &lt;== Connection to SITE5-OPS-IR-01 G0/1 ==&gt;
+ nameif inside-ops
+ security-level 100
+ ip address 172.16.5.5 255.255.255.252 
+!
+interface Management0/0
+ shutdown
+ no nameif
+ no security-level
+ ip address 172.16.1.195 255.255.255.0 
+!
+ftp mode passive
+access-list ACL1 extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
+pager lines 23
+mtu outside-satcom 1500
+mtu inside-adm 1500
+mtu inside-ops 1500
+no failover
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 8192
+route outside-satcom 172.16.0.0 255.255.0.0 192.168.1.1 1
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+user-identity default-domain LOCAL
+aaa authentication login-history
+no snmp-server location
+no snmp-server contact
+crypto ipsec ikev2 ipsec-proposal P1
+ protocol esp encryption aes 3des des
+ protocol esp integrity sha-1
+crypto ipsec security-association pmtu-aging infinite
+crypto map cmap 1 match address ACL1
+crypto map cmap 1 set peer 192.168.1.1 
+crypto map cmap 1 set ikev2 ipsec-proposal P1
+crypto map cmap 1 set trustpoint SSL-Trustpoint
+crypto map cmap interface outside-satcom
+crypto ca trustpoint SSL-Trustpoint
+ enrollment terminal
+ fqdn SITE5-tb-or-01.36technology.com
+ subject-name CN=SITE5-tb-or-01.36technology.com,O=36technology,C=US,St=Illiniois,L=Bloomington
+ ignore-ipsec-keyusage
+ crl configure
+crypto ca trustpoint SSL-Trustpoint-1
+ enrollment terminal
+ crl configure
+crypto ca trustpoint _SmartCallHome_ServerCA
+ no validation-usage
+ crl configure
+crypto ca trustpool policy
+ auto-import
+crypto ca certificate chain SSL-Trustpoint
+ certificate ca 1e00000002f37ee172c075e0e8000000000002
+    30820677 3082045f a0030201 0202131e 00000002 f37ee172 c075e0e8 00000000 
+    0002300d 06092a86 4886f70d 01010505 00301231 10300e06 03550403 13074f52 
+    43412d43 41301e17 0d313830 35313730 31333532 355a170d 31393035 31373031 
+    34353235 5a305231 13301106 0a099226 8993f22c 64011916 03636f6d 311c301a 
+    060a0992 268993f2 2c640119 160c3336 74656368 6e6f6c6f 6779311d 301b0603 
+    55040313 14333674 6563686e 6f6c6f67 792d4341 30312d43 41308202 22300d06 
+    092a8648 86f70d01 01010500 0382020f 00308202 0a028202 0100def9 5999c617 
+    f7641a54 3655a140 50087a80 b7f23a5f 40bcdf49 1e2f3b75 9f069fa8 59f4f269 
+    1fb7020e 345b5154 b79eb5a8 40ec7429 7df57b23 e189e741 e38b186c 92535c8f 
+    155f4200 b4a9b72e df61eca6 db9bba19 c4641003 189024de 509597f3 cdda39d4 
+    8e9e1342 ab3d3b86 297b2d5f e9631f68 aaedfebe c36de4bf 33df1cdf 3228d990 
+    3b398b0b 686248d3 c56d7434 25c733af b935ce35 0238b320 cfd4f291 283d960a 
+    f092af5a 4c8996c8 97a3afff e7ccdbcb d6efbb1c 3bff2ff3 8da5e8bf 502e199f 
+    6b5f1042 2dc90692 63e12a60 754326a7 d6f3e922 b77b4782 c24575ba 94a455f1 
+    f2d953ef ba9e011a a82e834c 97a4358c 7d7c49d8 90ec83ee b3f25641 063ec7bc 
+    18366d65 71680906 20a5a154 c8705db7 4207cbb9 20d90795 ae39c65c 297214cb 
+    535b0325 b97be5ad 5945e02c a86becfd 63affcc6 2fb1a6ca 1e34dca6 06c33ce2 
+    5524d4da 8261d98c a6a8cffe 612af879 102f83b7 d5469c26 833296d8 5474f108 
+    6ae262b3 4f9a48ff 9f822a21 4b55780d f6b6d761 0a07a5d0 0936cf35 e916f3ff 
+    97d66fe3 813d600b babee949 6641832a 65d16791 ca38d3e4 5c1a6159 cfc29a0b 
+    86ee1f9f 4aec3884 9f126300 8b2e6608 7b608b06 da5add04 9f95224a 1d0094a0 
+    9988f72d ddf1afb0 17cb46e9 81605d75 ce763fde 3984dad0 82cbf7a9 0db46144 
+    56347dce ed730633 41ce9a8e 9f91de67 1ed8e787 806f2e65 b3970203 010001a3 
+    82018430 82018030 1006092b 06010401 82371501 04030201 00301d06 03551d0e 
+    04160414 1d6a7830 0f23e947 31ac5964 d4b9463c c67d6eba 30190609 2b060104 
+    01823714 02040c1e 0a005300 75006200 43004130 0b060355 1d0f0404 03020186 
+    300f0603 551d1301 01ff0405 30030101 ff301f06 03551d23 04183016 8014c0e9 
+    196d9fc9 ffd6038a 3541b4ea 3b555e1e b6b43068 0603551d 1f046130 5f305da0 
+    5ba05986 2466696c 653a2f2f 2f2f4f52 43412f43 65727445 6e726f6c 6c2f4f52 
+    43412d43 412e6372 6c863168 7474703a 2f2f6361 30312e33 36746563 686e6f6c 
+    6f67792e 636f6d2f 63657274 64617461 2f4f5243 412d4341 2e63726c 30818806 
+    082b0601 05050701 01047c30 7a303506 082b0601 05050730 02862966 696c653a 
+    2f2f2f2f 4f524341 2f436572 74456e72 6f6c6c2f 4f524341 5f4f5243 412d4341 
+    2e637274 30410608 2b060105 05073002 86356874 74703a2f 2f636130 312e3336 
+    74656368 6e6f6c6f 67792e63 6f6d2f63 65727464 6174612f 4f524341 4f524341 
+    2d43412e 63727430 0d06092a 864886f7 0d010105 05000382 02010027 1ad3f3e9 
+    10a94e6c ab524ac8 c2210de8 56ef315a 51c21b5c d6b4ce00 2c1308ee 4fe88531 
+    d570e1a5 b2bce572 a14658d5 34f6b387 b85f8847 048a1e5f 23414933 5307c597 
+    b81c2d80 9c707879 684295f7 62273d8d b25a755f e97662d7 d2007890 056a4493 
+    16f49748 59441dba c9680874 3eb6d741 2e866e86 cc4bc75e 7a365894 d75832f3 
+    ac34c9f9 50696c49 874c0300 828e141e 46c1726a 2b3bab89 7ed701eb 5b05364e 
+    313ec048 e68fc19a c10b71a4 bafca94e 8c13035a ccca1b54 3bd49e95 1252c0e1 
+    3956c700 d29ff2d7 e85344b5 e6e17ac9 06d8643c f11a3c40 b333c192 a32ec82b 
+    cc355b91 1a030a48 e39f8a43 0e5305a6 5b899777 0443b57a 8cef52a4 dcf8c4de 
+    489ecf6a b0683d0d a38c090c 7e1b6b37 7b5a8b8a c458986f 2d925afa deb71859 
+    e04247e8 cf182008 7a215e60 9632f741 061cd7a8 b55f2c02 9406d5fc d8d01e33 
+    a3aa7bf9 a5a7ac65 0cc389be 37c79848 6efd9e12 67a1caae 5a76cc70 ebbd8e3f 
+    5f4c494c edc9de37 2c973401 6d496702 555bba45 17b15fba 87c205f0 0c1b59c6 
+    0a7e6ef4 e1998e62 6bd1b7be 5eacec9f e4aba5cd 05f283b8 57401629 7283ff95 
+    118dbf5f 7a1e83be 506e6b4c 6fdd80ae 68195703 f4c08cf6 7647fe56 ea710a2f 
+    25419be7 898aef5b 78b80579 b444f165 3cd99c06 3fdb5b71 d7df2807 3b0b611d 
+    e57ccece 85fcf755 35dd213a 5840478c 205b0d7e 02d4b3fc 663222
+  quit
+crypto ca certificate chain SSL-Trustpoint-1
+ certificate ca 24a704524fdbc98c4c1692d94b94e350
+    308204ff 308202e7 a0030201 02021024 a704524f dbc98c4c 1692d94b 94e35030 
+    0d06092a 864886f7 0d010105 05003012 3110300e 06035504 0313074f 5243412d 
+    4341301e 170d3138 30353136 30323034 33375a17 0d323330 35313630 32313433 
+    355a3012 3110300e 06035504 0313074f 5243412d 43413082 0222300d 06092a86 
+    4886f70d 01010105 00038202 0f003082 020a0282 020100b6 be4642c3 3f481107 
+    92f3df80 f1cb3734 80a4ae54 7e0c4c5a 438c93d3 bcec4203 fc8df8af be8d691a 
+    5858baf8 c4657c25 bbd2b10f 2b5422ba 52582c66 ecf36326 7caa7a92 704ee4bf 
+    6e794f8f f7129bbc 7c422d14 ac93c72a 37f99362 d023b743 bf0caa01 56d7cef4 
+    97071937 577d8834 d3d0142c 7baafc03 8e954c31 64c6a0c7 549acca2 b6199a42 
+    afc70a0a 8bb4087d 4d364c02 a56fc3c1 a3bfff22 e8577910 53106829 5467d9fe 
+    d21486d1 15265535 72750bfa 274c4746 278190c1 2c4bffa4 cdc2fbd0 21d8eff9 
+    8a4a4331 fda5010e 46e8f168 2c571419 fb720415 6433d833 4eea3ec4 21f83fcc 
+    b4a3cb5c 404c851d 74262fb0 4dc6ba1b 7c00ab2f 548528c5 32087220 7ad9b0ca 
+    2702aefb cfafa647 461f199e c0377373 ef394b3a 35854159 79f73174 8273a44c 
+    d82501fd 5c282df4 4caf9b5c fec256b8 b5d28d0f 12de2e80 40d23a17 ca4f38ed 
+    dbe2ed2a fbdddaf6 47bd55cc eaa262eb b19fabab 6ea567e3 67c6728a d1b47550 
+    9b6857e8 d714d636 807e85ff 7ec35b26 eac7ac7f 0753daca ad2388e0 6824b29e 
+    6775f4aa 56c537fa 1411a3f1 f9afae1e e9408911 b0ece7a4 cd7acba8 f9807ca2 
+    85e319c6 7e6117e7 28e8c431 5fbb3846 939a2338 86875dd1 17d18f02 5bb47818 
+    f6ba1a8f 0ce48b96 1c006799 bd703239 6abc3538 9aa93d0d ef1d0219 27a9b079 
+    552ebb49 9445aa1f 76a35def d2f7383d 4f87e427 8f5f0f02 03010001 a351304f 
+    300b0603 551d0f04 04030201 86300f06 03551d13 0101ff04 05300301 01ff301d 
+    0603551d 0e041604 14c0e919 6d9fc9ff d6038a35 41b4ea3b 555e1eb6 b4301006 
+    092b0601 04018237 15010403 02010030 0d06092a 864886f7 0d010105 05000382 
+    02010060 ce18ead7 b336cba5 5bba4d86 be113d5e 06f524d2 cf05f9f3 f76ec2db 
+    d9f0cb27 63dd78ce 3f26af48 64090d29 92ed403f b879e467 84e8a20b 98c5b3db 
+    ccd486b1 7cf134f8 965e1d78 8209c4e4 937cac66 7e46bd58 096016e0 317c04af 
+    319f20cb 69146e1e b47cd52e 3faf51f1 c9d12811 9624c85a fca1c48c 66ae4c6a 
+    59348f48 e394fe41 2e77570f 4bcf118b 6b17a628 f9887f82 6112c36d 7e40fa8f 
+    886362ef 6cfc72c8 2ef04f7b 9bcaee12 ffb14168 afa19e73 8e32b42c 9aec2360 
+    dccec725 d7e65ced 1348d09a c7d8346b 4f76aeac 3f5d8fcf c75ec9c9 47ea1a67 
+    977d6cc4 4118e773 91b65d7f ed617471 50538355 e2f09756 6e505a48 c486a72c 
+    472952b1 2f1d68e3 1176a1f7 ec8b2a68 a3077133 8e2b4d0f cb111a09 7f37f15a 
+    05fb5145 19ab5d1b 8eaa0258 0dc7756f 9d979c80 6bd354f1 943514f5 619f67d0 
+    8032ae98 db0bc402 0fb350a9 05f55fc0 30e28c7e 9bdb7b04 36803c72 1479e9bd 
+    99483a14 98a6eebb c4de2ef3 70cfc23b 886b40b4 fcbbb5f9 f991740b 43935b8c 
+    e0755014 90cf63d3 81a82dd1 d3c9798d c5e53180 4fa7e5db 6b9bf98b 6a574f42 
+    66ebe7f5 f846f897 ff8def82 5613c13a 10e6f30b 97597c61 e43c37a2 01531126 
+    f796f263 eef1021c fa374b16 03dd73de 34e9bada 11763f32 e961353e af929580 
+    784d39a3 48d74bd2 3864e9b4 c842a5f4 57fe3c11 21e06f54 4dd26403 3f153bda 
+    86acce
+  quit
+crypto ca certificate chain _SmartCallHome_ServerCA
+ certificate ca 513fb9743870b73440418d30930699ff
+    30820538 30820420 a0030201 02021051 3fb97438 70b73440 418d3093 0699ff30 
+    0d06092a 864886f7 0d01010b 05003081 ca310b30 09060355 04061302 55533117 
+    30150603 55040a13 0e566572 69536967 6e2c2049 6e632e31 1f301d06 0355040b 
+    13165665 72695369 676e2054 72757374 204e6574 776f726b 313a3038 06035504 
+    0b133128 63292032 30303620 56657269 5369676e 2c20496e 632e202d 20466f72 
+    20617574 686f7269 7a656420 75736520 6f6e6c79 31453043 06035504 03133c56 
+    65726953 69676e20 436c6173 73203320 5075626c 69632050 72696d61 72792043 
+    65727469 66696361 74696f6e 20417574 686f7269 7479202d 20473530 1e170d31 
+    33313033 31303030 3030305a 170d3233 31303330 32333539 35395a30 7e310b30 
+    09060355 04061302 5553311d 301b0603 55040a13 1453796d 616e7465 6320436f 
+    72706f72 6174696f 6e311f30 1d060355 040b1316 53796d61 6e746563 20547275 
+    7374204e 6574776f 726b312f 302d0603 55040313 2653796d 616e7465 6320436c 
+    61737320 33205365 63757265 20536572 76657220 4341202d 20473430 82012230 
+    0d06092a 864886f7 0d010101 05000382 010f0030 82010a02 82010100 b2d805ca 
+    1c742db5 175639c5 4a520996 e84bd80c f1689f9a 422862c3 a530537e 5511825b 
+    037a0d2f e17904c9 b4967719 81019459 f9bcf77a 9927822d b783dd5a 277fb203 
+    7a9c5325 e9481f46 4fc89d29 f8be7956 f6f7fdd9 3a68da8b 4b823341 12c3c83c 
+    ccd6967a 84211a22 04032717 8b1c6861 930f0e51 80331db4 b5ceeb7e d062acee 
+    b37b0174 ef6935eb cad53da9 ee9798ca 8daa440e 25994a15 96a4ce6d 02541f2a 
+    6a26e206 3a6348ac b44cd175 9350ff13 2fd6dae1 c618f59f c9255df3 003ade26 
+    4db42909 cd0f3d23 6f164a81 16fbf283 10c3b8d6 d855323d f1bd0fbd 8c52954a 
+    16977a52 2163752f 16f9c466 bef5b509 d8ff2700 cd447c6f 4b3fb0f7 02030100 
+    01a38201 63308201 5f301206 03551d13 0101ff04 08300601 01ff0201 00303006 
+    03551d1f 04293027 3025a023 a021861f 68747470 3a2f2f73 312e7379 6d63622e 
+    636f6d2f 70636133 2d67352e 63726c30 0e060355 1d0f0101 ff040403 02010630 
+    2f06082b 06010505 07010104 23302130 1f06082b 06010505 07300186 13687474 
+    703a2f2f 73322e73 796d6362 2e636f6d 306b0603 551d2004 64306230 60060a60 
+    86480186 f8450107 36305230 2606082b 06010505 07020116 1a687474 703a2f2f 
+    7777772e 73796d61 7574682e 636f6d2f 63707330 2806082b 06010505 07020230 
+    1c1a1a68 7474703a 2f2f7777 772e7379 6d617574 682e636f 6d2f7270 61302906 
+    03551d11 04223020 a41e301c 311a3018 06035504 03131153 796d616e 74656350 
+    4b492d31 2d353334 301d0603 551d0e04 1604145f 60cf6190 55df8443 148a602a 
+    b2f57af4 4318ef30 1f060355 1d230418 30168014 7fd365a7 c2ddecbb f03009f3 
+    4339fa02 af333133 300d0609 2a864886 f70d0101 0b050003 82010100 5e945649 
+    dd8e2d65 f5c13651 b603e3da 9e7319f2 1f59ab58 7e6c2605 2cfa81d7 5c231722 
+    2c3793f7 86ec85e6 b0a3fd1f e232a845 6fe1d9fb b9afd270 a0324265 bf84fe16 
+    2a8f3fc5 a6d6a393 7d43e974 21913528 f463e92e edf7f55c 7f4b9ab5 20e90abd 
+    e045100c 14949a5d a5e34b91 e8249b46 4065f422 72cd99f8 8811f5f3 7fe63382 
+    e6a8c57e fed008e2 25580871 68e6cda2 e614de4e 52242dfd e5791353 e75e2f2d 
+    4d1b6d40 15522bf7 87897812 816ed94d aa2d78d4 c22c3d08 5f87919e 1f0eb0de 
+    30526486 89aa9d66 9c0e760c 80f274d8 2af8b83a ced7d60f 11be6bab 14f5bd41 
+    a0226389 f1ba0f6f 2963662d 3fac8c72 c5fbc7e4 d40ff23b 4f8c29c7
+  quit
+crypto ikev2 policy 1
+ encryption 3des
+ integrity sha
+ group 2
+ prf sha
+ lifetime seconds 43200
+crypto ikev2 enable outside-satcom
+telnet timeout 5
+ssh stricthostkeycheck
+ssh timeout 5
+ssh key-exchange group dh-group1-sha1
+console timeout 0
+threat-detection basic-threat
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+dynamic-access-policy-record DfltAccessPolicy
+tunnel-group 192.168.1.1 type ipsec-l2l
+tunnel-group 192.168.1.1 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication certificate
+ ikev2 local-authentication certificate SSL-Trustpoint
+!
+class-map inspection_default
+ match default-inspection-traffic
+!
+!
+policy-map type inspect dns preset_dns_map
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map global_policy
+ class inspection_default
+  inspect ip-options 
+  inspect netbios 
+  inspect rtsp 
+  inspect sunrpc 
+  inspect tftp 
+  inspect xdmcp 
+  inspect dns preset_dns_map 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect rsh 
+  inspect esmtp 
+  inspect sqlnet 
+  inspect sip  
+  inspect skinny  
+policy-map type inspect dns migrated_dns_map_2
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map type inspect dns migrated_dns_map_1
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+!
+service-policy global_policy global
+prompt hostname context 
+no call-home reporting anonymous
+call-home
+ profile CiscoTAC-1
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination transport-method http
+  subscribe-to-alert-group diagnostic
+  subscribe-to-alert-group environment
+  subscribe-to-alert-group inventory periodic monthly
+  subscribe-to-alert-group configuration periodic monthly
+  subscribe-to-alert-group telemetry periodic daily
+ profile License
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination transport-method http</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0"/>
+        <interface id="1" name="GigabitEthernet0/1"/>
+        <interface id="2" name="GigabitEthernet0/2"/>
+        <interface id="3" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="SITE4-TB-OR-01" type="SIMPLE" subtype="ASAv" location="671,394">
+        <extensions>
+            <entry key="config" type="String">!
+ASA Version 9.8(2) 
+!
+hostname SITE4-TB-OR-01
+enable password $sha512$5000$ydIVKKyGo+JCwoJITIoE2Q==$jlX0SkeWRtJsvuecEYicXw== pbkdf2
+xlate per-session deny tcp any4 any4
+xlate per-session deny tcp any4 any6
+xlate per-session deny tcp any6 any4
+xlate per-session deny tcp any6 any6
+xlate per-session deny udp any4 any4 eq domain
+xlate per-session deny udp any4 any6 eq domain
+xlate per-session deny udp any6 any4 eq domain
+xlate per-session deny udp any6 any6 eq domain
+names
+
+!
+interface GigabitEthernet0/0
+ nameif outside-microwave-SITE3
+ security-level 0
+ ip address 192.168.0.6 255.255.255.252 
+!
+interface GigabitEthernet0/1
+ description &lt;== NO SATCOM ==&gt;
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to SITE4-ADM-IR-01 G0/1 ==&gt;
+ nameif inside-adm
+ security-level 100
+ ip address 172.16.4.1 255.255.255.252 
+!
+interface GigabitEthernet0/3
+ description &lt;== Connection to SITE4-OPS-IR-01 G0/1 ==&gt;
+ nameif inside-ops
+ security-level 100
+ ip address 172.16.4.5 255.255.255.252 
+!
+interface Management0/0
+ shutdown
+ no nameif
+ no security-level
+ ip address 172.16.1.190 255.255.255.0 
+!
+ftp mode passive
+access-list ACL1 extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
+pager lines 23
+mtu outside-microwave-SITE3 1500
+mtu inside-adm 1500
+mtu inside-ops 1500
+no failover
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 8192
+route outside-microwave-SITE3 172.16.0.0 255.255.255.0 192.168.0.5 1
+route outside-microwave-SITE3 172.16.3.0 255.255.255.0 192.168.0.5 1
+route outside-microwave-SITE3 172.16.5.0 255.255.255.0 192.168.0.5 1
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+user-identity default-domain LOCAL
+aaa authentication login-history
+no snmp-server location
+no snmp-server contact
+crypto ipsec ikev2 ipsec-proposal P1
+ protocol esp encryption aes 3des des
+ protocol esp integrity sha-1
+crypto ipsec security-association pmtu-aging infinite
+crypto map cmap 1 match address ACL1
+crypto map cmap 1 set peer 192.168.0.5 
+crypto map cmap 1 set ikev2 ipsec-proposal P1
+crypto map cmap 1 set trustpoint SSL-Trustpoint
+crypto map cmap interface outside-microwave-SITE3
+crypto ca trustpoint SSL-Trustpoint
+ enrollment terminal
+ fqdn SITE4-tb-or-01.36technology.com
+ subject-name CN=SITE4-tb-or-01.36technology.com,O=36technology,C=US,St=Illiniois,L=Bloomington
+ ignore-ipsec-keyusage
+ crl configure
+crypto ca trustpoint SSL-Trustpoint-1
+ enrollment terminal
+ crl configure
+crypto ca trustpoint _SmartCallHome_ServerCA
+ no validation-usage
+ crl configure
+crypto ca trustpool policy
+ auto-import
+crypto ca certificate chain SSL-Trustpoint
+ certificate ca 1e00000002f37ee172c075e0e8000000000002
+    30820677 3082045f a0030201 0202131e 00000002 f37ee172 c075e0e8 00000000 
+    0002300d 06092a86 4886f70d 01010505 00301231 10300e06 03550403 13074f52 
+    43412d43 41301e17 0d313830 35313730 31333532 355a170d 31393035 31373031 
+    34353235 5a305231 13301106 0a099226 8993f22c 64011916 03636f6d 311c301a 
+    060a0992 268993f2 2c640119 160c3336 74656368 6e6f6c6f 6779311d 301b0603 
+    55040313 14333674 6563686e 6f6c6f67 792d4341 30312d43 41308202 22300d06 
+    092a8648 86f70d01 01010500 0382020f 00308202 0a028202 0100def9 5999c617 
+    f7641a54 3655a140 50087a80 b7f23a5f 40bcdf49 1e2f3b75 9f069fa8 59f4f269 
+    1fb7020e 345b5154 b79eb5a8 40ec7429 7df57b23 e189e741 e38b186c 92535c8f 
+    155f4200 b4a9b72e df61eca6 db9bba19 c4641003 189024de 509597f3 cdda39d4 
+    8e9e1342 ab3d3b86 297b2d5f e9631f68 aaedfebe c36de4bf 33df1cdf 3228d990 
+    3b398b0b 686248d3 c56d7434 25c733af b935ce35 0238b320 cfd4f291 283d960a 
+    f092af5a 4c8996c8 97a3afff e7ccdbcb d6efbb1c 3bff2ff3 8da5e8bf 502e199f 
+    6b5f1042 2dc90692 63e12a60 754326a7 d6f3e922 b77b4782 c24575ba 94a455f1 
+    f2d953ef ba9e011a a82e834c 97a4358c 7d7c49d8 90ec83ee b3f25641 063ec7bc 
+    18366d65 71680906 20a5a154 c8705db7 4207cbb9 20d90795 ae39c65c 297214cb 
+    535b0325 b97be5ad 5945e02c a86becfd 63affcc6 2fb1a6ca 1e34dca6 06c33ce2 
+    5524d4da 8261d98c a6a8cffe 612af879 102f83b7 d5469c26 833296d8 5474f108 
+    6ae262b3 4f9a48ff 9f822a21 4b55780d f6b6d761 0a07a5d0 0936cf35 e916f3ff 
+    97d66fe3 813d600b babee949 6641832a 65d16791 ca38d3e4 5c1a6159 cfc29a0b 
+    86ee1f9f 4aec3884 9f126300 8b2e6608 7b608b06 da5add04 9f95224a 1d0094a0 
+    9988f72d ddf1afb0 17cb46e9 81605d75 ce763fde 3984dad0 82cbf7a9 0db46144 
+    56347dce ed730633 41ce9a8e 9f91de67 1ed8e787 806f2e65 b3970203 010001a3 
+    82018430 82018030 1006092b 06010401 82371501 04030201 00301d06 03551d0e 
+    04160414 1d6a7830 0f23e947 31ac5964 d4b9463c c67d6eba 30190609 2b060104 
+    01823714 02040c1e 0a005300 75006200 43004130 0b060355 1d0f0404 03020186 
+    300f0603 551d1301 01ff0405 30030101 ff301f06 03551d23 04183016 8014c0e9 
+    196d9fc9 ffd6038a 3541b4ea 3b555e1e b6b43068 0603551d 1f046130 5f305da0 
+    5ba05986 2466696c 653a2f2f 2f2f4f52 43412f43 65727445 6e726f6c 6c2f4f52 
+    43412d43 412e6372 6c863168 7474703a 2f2f6361 30312e33 36746563 686e6f6c 
+    6f67792e 636f6d2f 63657274 64617461 2f4f5243 412d4341 2e63726c 30818806 
+    082b0601 05050701 01047c30 7a303506 082b0601 05050730 02862966 696c653a 
+    2f2f2f2f 4f524341 2f436572 74456e72 6f6c6c2f 4f524341 5f4f5243 412d4341 
+    2e637274 30410608 2b060105 05073002 86356874 74703a2f 2f636130 312e3336 
+    74656368 6e6f6c6f 67792e63 6f6d2f63 65727464 6174612f 4f524341 4f524341 
+    2d43412e 63727430 0d06092a 864886f7 0d010105 05000382 02010027 1ad3f3e9 
+    10a94e6c ab524ac8 c2210de8 56ef315a 51c21b5c d6b4ce00 2c1308ee 4fe88531 
+    d570e1a5 b2bce572 a14658d5 34f6b387 b85f8847 048a1e5f 23414933 5307c597 
+    b81c2d80 9c707879 684295f7 62273d8d b25a755f e97662d7 d2007890 056a4493 
+    16f49748 59441dba c9680874 3eb6d741 2e866e86 cc4bc75e 7a365894 d75832f3 
+    ac34c9f9 50696c49 874c0300 828e141e 46c1726a 2b3bab89 7ed701eb 5b05364e 
+    313ec048 e68fc19a c10b71a4 bafca94e 8c13035a ccca1b54 3bd49e95 1252c0e1 
+    3956c700 d29ff2d7 e85344b5 e6e17ac9 06d8643c f11a3c40 b333c192 a32ec82b 
+    cc355b91 1a030a48 e39f8a43 0e5305a6 5b899777 0443b57a 8cef52a4 dcf8c4de 
+    489ecf6a b0683d0d a38c090c 7e1b6b37 7b5a8b8a c458986f 2d925afa deb71859 
+    e04247e8 cf182008 7a215e60 9632f741 061cd7a8 b55f2c02 9406d5fc d8d01e33 
+    a3aa7bf9 a5a7ac65 0cc389be 37c79848 6efd9e12 67a1caae 5a76cc70 ebbd8e3f 
+    5f4c494c edc9de37 2c973401 6d496702 555bba45 17b15fba 87c205f0 0c1b59c6 
+    0a7e6ef4 e1998e62 6bd1b7be 5eacec9f e4aba5cd 05f283b8 57401629 7283ff95 
+    118dbf5f 7a1e83be 506e6b4c 6fdd80ae 68195703 f4c08cf6 7647fe56 ea710a2f 
+    25419be7 898aef5b 78b80579 b444f165 3cd99c06 3fdb5b71 d7df2807 3b0b611d 
+    e57ccece 85fcf755 35dd213a 5840478c 205b0d7e 02d4b3fc 663222
+  quit
+crypto ca certificate chain SSL-Trustpoint-1
+ certificate ca 24a704524fdbc98c4c1692d94b94e350
+    308204ff 308202e7 a0030201 02021024 a704524f dbc98c4c 1692d94b 94e35030 
+    0d06092a 864886f7 0d010105 05003012 3110300e 06035504 0313074f 5243412d 
+    4341301e 170d3138 30353136 30323034 33375a17 0d323330 35313630 32313433 
+    355a3012 3110300e 06035504 0313074f 5243412d 43413082 0222300d 06092a86 
+    4886f70d 01010105 00038202 0f003082 020a0282 020100b6 be4642c3 3f481107 
+    92f3df80 f1cb3734 80a4ae54 7e0c4c5a 438c93d3 bcec4203 fc8df8af be8d691a 
+    5858baf8 c4657c25 bbd2b10f 2b5422ba 52582c66 ecf36326 7caa7a92 704ee4bf 
+    6e794f8f f7129bbc 7c422d14 ac93c72a 37f99362 d023b743 bf0caa01 56d7cef4 
+    97071937 577d8834 d3d0142c 7baafc03 8e954c31 64c6a0c7 549acca2 b6199a42 
+    afc70a0a 8bb4087d 4d364c02 a56fc3c1 a3bfff22 e8577910 53106829 5467d9fe 
+    d21486d1 15265535 72750bfa 274c4746 278190c1 2c4bffa4 cdc2fbd0 21d8eff9 
+    8a4a4331 fda5010e 46e8f168 2c571419 fb720415 6433d833 4eea3ec4 21f83fcc 
+    b4a3cb5c 404c851d 74262fb0 4dc6ba1b 7c00ab2f 548528c5 32087220 7ad9b0ca 
+    2702aefb cfafa647 461f199e c0377373 ef394b3a 35854159 79f73174 8273a44c 
+    d82501fd 5c282df4 4caf9b5c fec256b8 b5d28d0f 12de2e80 40d23a17 ca4f38ed 
+    dbe2ed2a fbdddaf6 47bd55cc eaa262eb b19fabab 6ea567e3 67c6728a d1b47550 
+    9b6857e8 d714d636 807e85ff 7ec35b26 eac7ac7f 0753daca ad2388e0 6824b29e 
+    6775f4aa 56c537fa 1411a3f1 f9afae1e e9408911 b0ece7a4 cd7acba8 f9807ca2 
+    85e319c6 7e6117e7 28e8c431 5fbb3846 939a2338 86875dd1 17d18f02 5bb47818 
+    f6ba1a8f 0ce48b96 1c006799 bd703239 6abc3538 9aa93d0d ef1d0219 27a9b079 
+    552ebb49 9445aa1f 76a35def d2f7383d 4f87e427 8f5f0f02 03010001 a351304f 
+    300b0603 551d0f04 04030201 86300f06 03551d13 0101ff04 05300301 01ff301d 
+    0603551d 0e041604 14c0e919 6d9fc9ff d6038a35 41b4ea3b 555e1eb6 b4301006 
+    092b0601 04018237 15010403 02010030 0d06092a 864886f7 0d010105 05000382 
+    02010060 ce18ead7 b336cba5 5bba4d86 be113d5e 06f524d2 cf05f9f3 f76ec2db 
+    d9f0cb27 63dd78ce 3f26af48 64090d29 92ed403f b879e467 84e8a20b 98c5b3db 
+    ccd486b1 7cf134f8 965e1d78 8209c4e4 937cac66 7e46bd58 096016e0 317c04af 
+    319f20cb 69146e1e b47cd52e 3faf51f1 c9d12811 9624c85a fca1c48c 66ae4c6a 
+    59348f48 e394fe41 2e77570f 4bcf118b 6b17a628 f9887f82 6112c36d 7e40fa8f 
+    886362ef 6cfc72c8 2ef04f7b 9bcaee12 ffb14168 afa19e73 8e32b42c 9aec2360 
+    dccec725 d7e65ced 1348d09a c7d8346b 4f76aeac 3f5d8fcf c75ec9c9 47ea1a67 
+    977d6cc4 4118e773 91b65d7f ed617471 50538355 e2f09756 6e505a48 c486a72c 
+    472952b1 2f1d68e3 1176a1f7 ec8b2a68 a3077133 8e2b4d0f cb111a09 7f37f15a 
+    05fb5145 19ab5d1b 8eaa0258 0dc7756f 9d979c80 6bd354f1 943514f5 619f67d0 
+    8032ae98 db0bc402 0fb350a9 05f55fc0 30e28c7e 9bdb7b04 36803c72 1479e9bd 
+    99483a14 98a6eebb c4de2ef3 70cfc23b 886b40b4 fcbbb5f9 f991740b 43935b8c 
+    e0755014 90cf63d3 81a82dd1 d3c9798d c5e53180 4fa7e5db 6b9bf98b 6a574f42 
+    66ebe7f5 f846f897 ff8def82 5613c13a 10e6f30b 97597c61 e43c37a2 01531126 
+    f796f263 eef1021c fa374b16 03dd73de 34e9bada 11763f32 e961353e af929580 
+    784d39a3 48d74bd2 3864e9b4 c842a5f4 57fe3c11 21e06f54 4dd26403 3f153bda 
+    86acce
+  quit
+crypto ca certificate chain _SmartCallHome_ServerCA
+ certificate ca 513fb9743870b73440418d30930699ff
+    30820538 30820420 a0030201 02021051 3fb97438 70b73440 418d3093 0699ff30 
+    0d06092a 864886f7 0d01010b 05003081 ca310b30 09060355 04061302 55533117 
+    30150603 55040a13 0e566572 69536967 6e2c2049 6e632e31 1f301d06 0355040b 
+    13165665 72695369 676e2054 72757374 204e6574 776f726b 313a3038 06035504 
+    0b133128 63292032 30303620 56657269 5369676e 2c20496e 632e202d 20466f72 
+    20617574 686f7269 7a656420 75736520 6f6e6c79 31453043 06035504 03133c56 
+    65726953 69676e20 436c6173 73203320 5075626c 69632050 72696d61 72792043 
+    65727469 66696361 74696f6e 20417574 686f7269 7479202d 20473530 1e170d31 
+    33313033 31303030 3030305a 170d3233 31303330 32333539 35395a30 7e310b30 
+    09060355 04061302 5553311d 301b0603 55040a13 1453796d 616e7465 6320436f 
+    72706f72 6174696f 6e311f30 1d060355 040b1316 53796d61 6e746563 20547275 
+    7374204e 6574776f 726b312f 302d0603 55040313 2653796d 616e7465 6320436c 
+    61737320 33205365 63757265 20536572 76657220 4341202d 20473430 82012230 
+    0d06092a 864886f7 0d010101 05000382 010f0030 82010a02 82010100 b2d805ca 
+    1c742db5 175639c5 4a520996 e84bd80c f1689f9a 422862c3 a530537e 5511825b 
+    037a0d2f e17904c9 b4967719 81019459 f9bcf77a 9927822d b783dd5a 277fb203 
+    7a9c5325 e9481f46 4fc89d29 f8be7956 f6f7fdd9 3a68da8b 4b823341 12c3c83c 
+    ccd6967a 84211a22 04032717 8b1c6861 930f0e51 80331db4 b5ceeb7e d062acee 
+    b37b0174 ef6935eb cad53da9 ee9798ca 8daa440e 25994a15 96a4ce6d 02541f2a 
+    6a26e206 3a6348ac b44cd175 9350ff13 2fd6dae1 c618f59f c9255df3 003ade26 
+    4db42909 cd0f3d23 6f164a81 16fbf283 10c3b8d6 d855323d f1bd0fbd 8c52954a 
+    16977a52 2163752f 16f9c466 bef5b509 d8ff2700 cd447c6f 4b3fb0f7 02030100 
+    01a38201 63308201 5f301206 03551d13 0101ff04 08300601 01ff0201 00303006 
+    03551d1f 04293027 3025a023 a021861f 68747470 3a2f2f73 312e7379 6d63622e 
+    636f6d2f 70636133 2d67352e 63726c30 0e060355 1d0f0101 ff040403 02010630 
+    2f06082b 06010505 07010104 23302130 1f06082b 06010505 07300186 13687474 
+    703a2f2f 73322e73 796d6362 2e636f6d 306b0603 551d2004 64306230 60060a60 
+    86480186 f8450107 36305230 2606082b 06010505 07020116 1a687474 703a2f2f 
+    7777772e 73796d61 7574682e 636f6d2f 63707330 2806082b 06010505 07020230 
+    1c1a1a68 7474703a 2f2f7777 772e7379 6d617574 682e636f 6d2f7270 61302906 
+    03551d11 04223020 a41e301c 311a3018 06035504 03131153 796d616e 74656350 
+    4b492d31 2d353334 301d0603 551d0e04 1604145f 60cf6190 55df8443 148a602a 
+    b2f57af4 4318ef30 1f060355 1d230418 30168014 7fd365a7 c2ddecbb f03009f3 
+    4339fa02 af333133 300d0609 2a864886 f70d0101 0b050003 82010100 5e945649 
+    dd8e2d65 f5c13651 b603e3da 9e7319f2 1f59ab58 7e6c2605 2cfa81d7 5c231722 
+    2c3793f7 86ec85e6 b0a3fd1f e232a845 6fe1d9fb b9afd270 a0324265 bf84fe16 
+    2a8f3fc5 a6d6a393 7d43e974 21913528 f463e92e edf7f55c 7f4b9ab5 20e90abd 
+    e045100c 14949a5d a5e34b91 e8249b46 4065f422 72cd99f8 8811f5f3 7fe63382 
+    e6a8c57e fed008e2 25580871 68e6cda2 e614de4e 52242dfd e5791353 e75e2f2d 
+    4d1b6d40 15522bf7 87897812 816ed94d aa2d78d4 c22c3d08 5f87919e 1f0eb0de 
+    30526486 89aa9d66 9c0e760c 80f274d8 2af8b83a ced7d60f 11be6bab 14f5bd41 
+    a0226389 f1ba0f6f 2963662d 3fac8c72 c5fbc7e4 d40ff23b 4f8c29c7
+  quit
+crypto isakmp identity address 
+crypto ikev2 policy 1
+ encryption 3des
+ integrity sha
+ group 2
+ prf sha
+ lifetime seconds 43200
+crypto ikev2 enable outside-microwave-SITE3
+telnet timeout 5
+ssh stricthostkeycheck
+ssh timeout 5
+ssh key-exchange group dh-group1-sha1
+console timeout 0
+threat-detection basic-threat
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+dynamic-access-policy-record DfltAccessPolicy
+tunnel-group 192.168.0.5 type ipsec-l2l
+tunnel-group 192.168.0.5 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication certificate
+ ikev2 local-authentication certificate SSL-Trustpoint
+!
+class-map inspection_default
+ match default-inspection-traffic
+!
+!
+policy-map type inspect dns preset_dns_map
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map global_policy
+ class inspection_default
+  inspect ip-options 
+  inspect netbios 
+  inspect rtsp 
+  inspect sunrpc 
+  inspect tftp 
+  inspect xdmcp 
+  inspect dns preset_dns_map 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect rsh 
+  inspect esmtp 
+  inspect sqlnet 
+  inspect sip  
+  inspect skinny  
+policy-map type inspect dns migrated_dns_map_2
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map type inspect dns migrated_dns_map_1
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+!
+service-policy global_policy global
+prompt hostname context 
+no call-home reporting anonymous
+call-home
+ profile CiscoTAC-1
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination transport-method http
+  subscribe-to-alert-group diagnostic
+  subscribe-to-alert-group environment
+  subscribe-to-alert-group inventory periodic monthly
+  subscribe-to-alert-group configuration periodic monthly
+  subscribe-to-alert-group telemetry periodic daily
+ profile License
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination transport-method http</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0"/>
+        <interface id="1" name="GigabitEthernet0/1"/>
+        <interface id="2" name="GigabitEthernet0/2"/>
+        <interface id="3" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="SITE3-TB-OR-01" type="SIMPLE" subtype="ASAv" location="325,396">
+        <extensions>
+            <entry key="config" type="String">!
+ASA Version 9.8(2) 
+!
+hostname SITE3-TB-OR-01
+enable password $sha512$5000$/zHrHvM+npR80BkOFV5zeA==$snoWm3LWCeYEDqiv2VabuA== pbkdf2
+xlate per-session deny tcp any4 any4
+xlate per-session deny tcp any4 any6
+xlate per-session deny tcp any6 any4
+xlate per-session deny tcp any6 any6
+xlate per-session deny udp any4 any4 eq domain
+xlate per-session deny udp any4 any6 eq domain
+xlate per-session deny udp any6 any4 eq domain
+xlate per-session deny udp any6 any6 eq domain
+names
+
+!
+interface GigabitEthernet0/0
+ nameif outside-microwave-to-afpc
+ security-level 0
+ ip address 192.168.0.2 255.255.255.252 
+!
+interface GigabitEthernet0/1
+ nameif outside-satcom
+ security-level 0
+ ip address 192.168.1.102 255.255.255.0 
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to SITE3-ADM-IR-01 G0/1 ==&gt;
+ nameif inside-adm
+ security-level 100
+ ip address 172.16.3.1 255.255.255.252 
+!
+interface GigabitEthernet0/3
+ description &lt;== Connection to SITE3-OPS-IR-01 G0/1 ==&gt;
+ nameif inside-ops
+ security-level 100
+ ip address 172.16.3.5 255.255.255.252 
+!
+interface GigabitEthernet0/4
+ nameif outside-microwave-to-SITE4
+ security-level 0
+ ip address 192.168.0.5 255.255.255.252 
+!
+interface Management0/0
+ shutdown
+ no nameif
+ no security-level
+ ip address 172.16.1.185 255.255.255.0 
+!
+ftp mode passive
+same-security-traffic permit intra-interface
+access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
+pager lines 23
+mtu outside-microwave-to-afpc 1500
+mtu outside-satcom 1500
+mtu inside-adm 1500
+mtu inside-ops 1500
+mtu outside-microwave-to-SITE4 1500
+no failover
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 8192
+route outside-microwave-to-afpc 172.16.0.0 255.255.255.0 192.168.0.1 1 track 1
+route outside-satcom 172.16.0.0 255.255.0.0 192.168.1.1 1
+route outside-microwave-to-SITE4 172.16.4.0 255.255.255.0 192.168.0.6 1
+route outside-microwave-to-afpc 172.16.5.0 255.255.255.0 192.168.0.1 1
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+user-identity default-domain LOCAL
+aaa authentication login-history
+no snmp-server location
+no snmp-server contact
+sla monitor 123
+ type echo protocol ipIcmpEcho 192.168.0.1 interface outside-microwave-to-afpc
+ num-packets 3
+ frequency 10
+sla monitor schedule 123 life forever start-time now
+crypto ipsec ikev2 ipsec-proposal P1
+ protocol esp encryption aes 3des des
+ protocol esp integrity sha-1
+crypto ipsec security-association pmtu-aging infinite
+crypto map SITE3-TO-AFPC 1 match address GRAYNET
+crypto map SITE3-TO-AFPC 1 set peer 192.168.0.1 
+crypto map SITE3-TO-AFPC 1 set ikev2 ipsec-proposal P1
+crypto map SITE3-TO-AFPC interface outside-microwave-to-afpc
+crypto map SITE3-TO-SITE4 1 match address GRAYNET
+crypto map SITE3-TO-SITE4 1 set peer 192.168.0.6 
+crypto map SITE3-TO-SITE4 1 set ikev2 ipsec-proposal P1
+crypto map SITE3-TO-SITE4 interface outside-microwave-to-SITE4
+crypto map SITE3-TO-AFPC-SATCOM 1 match address GRAYNET
+crypto map SITE3-TO-AFPC-SATCOM 1 set peer 192.168.1.1 
+crypto map SITE3-TO-AFPC-SATCOM 1 set ikev2 ipsec-proposal P1
+crypto map SITE3-TO-AFPC-SATCOM interface outside-satcom
+crypto ca trustpoint SSL-Trustpoint
+ enrollment terminal
+ fqdn SITE3-tb-or-01.36technology.com
+ subject-name CN=SITE3-tb-or-01.36technology.com,O=36technology,C=US,St=Illiniois,L=Bloomington
+ ignore-ipsec-keyusage
+ crl configure
+crypto ca trustpoint SSL-Trustpoint-1
+ enrollment terminal
+ crl configure
+crypto ca trustpool policy
+ auto-import
+crypto ca certificate chain SSL-Trustpoint
+ certificate ca 1e00000002f37ee172c075e0e8000000000002
+    30820677 3082045f a0030201 0202131e 00000002 f37ee172 c075e0e8 00000000 
+    0002300d 06092a86 4886f70d 01010505 00301231 10300e06 03550403 13074f52 
+    43412d43 41301e17 0d313830 35313730 31333532 355a170d 31393035 31373031 
+    34353235 5a305231 13301106 0a099226 8993f22c 64011916 03636f6d 311c301a 
+    060a0992 268993f2 2c640119 160c3336 74656368 6e6f6c6f 6779311d 301b0603 
+    55040313 14333674 6563686e 6f6c6f67 792d4341 30312d43 41308202 22300d06 
+    092a8648 86f70d01 01010500 0382020f 00308202 0a028202 0100def9 5999c617 
+    f7641a54 3655a140 50087a80 b7f23a5f 40bcdf49 1e2f3b75 9f069fa8 59f4f269 
+    1fb7020e 345b5154 b79eb5a8 40ec7429 7df57b23 e189e741 e38b186c 92535c8f 
+    155f4200 b4a9b72e df61eca6 db9bba19 c4641003 189024de 509597f3 cdda39d4 
+    8e9e1342 ab3d3b86 297b2d5f e9631f68 aaedfebe c36de4bf 33df1cdf 3228d990 
+    3b398b0b 686248d3 c56d7434 25c733af b935ce35 0238b320 cfd4f291 283d960a 
+    f092af5a 4c8996c8 97a3afff e7ccdbcb d6efbb1c 3bff2ff3 8da5e8bf 502e199f 
+    6b5f1042 2dc90692 63e12a60 754326a7 d6f3e922 b77b4782 c24575ba 94a455f1 
+    f2d953ef ba9e011a a82e834c 97a4358c 7d7c49d8 90ec83ee b3f25641 063ec7bc 
+    18366d65 71680906 20a5a154 c8705db7 4207cbb9 20d90795 ae39c65c 297214cb 
+    535b0325 b97be5ad 5945e02c a86becfd 63affcc6 2fb1a6ca 1e34dca6 06c33ce2 
+    5524d4da 8261d98c a6a8cffe 612af879 102f83b7 d5469c26 833296d8 5474f108 
+    6ae262b3 4f9a48ff 9f822a21 4b55780d f6b6d761 0a07a5d0 0936cf35 e916f3ff 
+    97d66fe3 813d600b babee949 6641832a 65d16791 ca38d3e4 5c1a6159 cfc29a0b 
+    86ee1f9f 4aec3884 9f126300 8b2e6608 7b608b06 da5add04 9f95224a 1d0094a0 
+    9988f72d ddf1afb0 17cb46e9 81605d75 ce763fde 3984dad0 82cbf7a9 0db46144 
+    56347dce ed730633 41ce9a8e 9f91de67 1ed8e787 806f2e65 b3970203 010001a3 
+    82018430 82018030 1006092b 06010401 82371501 04030201 00301d06 03551d0e 
+    04160414 1d6a7830 0f23e947 31ac5964 d4b9463c c67d6eba 30190609 2b060104 
+    01823714 02040c1e 0a005300 75006200 43004130 0b060355 1d0f0404 03020186 
+    300f0603 551d1301 01ff0405 30030101 ff301f06 03551d23 04183016 8014c0e9 
+    196d9fc9 ffd6038a 3541b4ea 3b555e1e b6b43068 0603551d 1f046130 5f305da0 
+    5ba05986 2466696c 653a2f2f 2f2f4f52 43412f43 65727445 6e726f6c 6c2f4f52 
+    43412d43 412e6372 6c863168 7474703a 2f2f6361 30312e33 36746563 686e6f6c 
+    6f67792e 636f6d2f 63657274 64617461 2f4f5243 412d4341 2e63726c 30818806 
+    082b0601 05050701 01047c30 7a303506 082b0601 05050730 02862966 696c653a 
+    2f2f2f2f 4f524341 2f436572 74456e72 6f6c6c2f 4f524341 5f4f5243 412d4341 
+    2e637274 30410608 2b060105 05073002 86356874 74703a2f 2f636130 312e3336 
+    74656368 6e6f6c6f 67792e63 6f6d2f63 65727464 6174612f 4f524341 4f524341 
+    2d43412e 63727430 0d06092a 864886f7 0d010105 05000382 02010027 1ad3f3e9 
+    10a94e6c ab524ac8 c2210de8 56ef315a 51c21b5c d6b4ce00 2c1308ee 4fe88531 
+    d570e1a5 b2bce572 a14658d5 34f6b387 b85f8847 048a1e5f 23414933 5307c597 
+    b81c2d80 9c707879 684295f7 62273d8d b25a755f e97662d7 d2007890 056a4493 
+    16f49748 59441dba c9680874 3eb6d741 2e866e86 cc4bc75e 7a365894 d75832f3 
+    ac34c9f9 50696c49 874c0300 828e141e 46c1726a 2b3bab89 7ed701eb 5b05364e 
+    313ec048 e68fc19a c10b71a4 bafca94e 8c13035a ccca1b54 3bd49e95 1252c0e1 
+    3956c700 d29ff2d7 e85344b5 e6e17ac9 06d8643c f11a3c40 b333c192 a32ec82b 
+    cc355b91 1a030a48 e39f8a43 0e5305a6 5b899777 0443b57a 8cef52a4 dcf8c4de 
+    489ecf6a b0683d0d a38c090c 7e1b6b37 7b5a8b8a c458986f 2d925afa deb71859 
+    e04247e8 cf182008 7a215e60 9632f741 061cd7a8 b55f2c02 9406d5fc d8d01e33 
+    a3aa7bf9 a5a7ac65 0cc389be 37c79848 6efd9e12 67a1caae 5a76cc70 ebbd8e3f 
+    5f4c494c edc9de37 2c973401 6d496702 555bba45 17b15fba 87c205f0 0c1b59c6 
+    0a7e6ef4 e1998e62 6bd1b7be 5eacec9f e4aba5cd 05f283b8 57401629 7283ff95 
+    118dbf5f 7a1e83be 506e6b4c 6fdd80ae 68195703 f4c08cf6 7647fe56 ea710a2f 
+    25419be7 898aef5b 78b80579 b444f165 3cd99c06 3fdb5b71 d7df2807 3b0b611d 
+    e57ccece 85fcf755 35dd213a 5840478c 205b0d7e 02d4b3fc 663222
+  quit
+crypto ca certificate chain SSL-Trustpoint-1
+ certificate ca 24a704524fdbc98c4c1692d94b94e350
+    308204ff 308202e7 a0030201 02021024 a704524f dbc98c4c 1692d94b 94e35030 
+    0d06092a 864886f7 0d010105 05003012 3110300e 06035504 0313074f 5243412d 
+    4341301e 170d3138 30353136 30323034 33375a17 0d323330 35313630 32313433 
+    355a3012 3110300e 06035504 0313074f 5243412d 43413082 0222300d 06092a86 
+    4886f70d 01010105 00038202 0f003082 020a0282 020100b6 be4642c3 3f481107 
+    92f3df80 f1cb3734 80a4ae54 7e0c4c5a 438c93d3 bcec4203 fc8df8af be8d691a 
+    5858baf8 c4657c25 bbd2b10f 2b5422ba 52582c66 ecf36326 7caa7a92 704ee4bf 
+    6e794f8f f7129bbc 7c422d14 ac93c72a 37f99362 d023b743 bf0caa01 56d7cef4 
+    97071937 577d8834 d3d0142c 7baafc03 8e954c31 64c6a0c7 549acca2 b6199a42 
+    afc70a0a 8bb4087d 4d364c02 a56fc3c1 a3bfff22 e8577910 53106829 5467d9fe 
+    d21486d1 15265535 72750bfa 274c4746 278190c1 2c4bffa4 cdc2fbd0 21d8eff9 
+    8a4a4331 fda5010e 46e8f168 2c571419 fb720415 6433d833 4eea3ec4 21f83fcc 
+    b4a3cb5c 404c851d 74262fb0 4dc6ba1b 7c00ab2f 548528c5 32087220 7ad9b0ca 
+    2702aefb cfafa647 461f199e c0377373 ef394b3a 35854159 79f73174 8273a44c 
+    d82501fd 5c282df4 4caf9b5c fec256b8 b5d28d0f 12de2e80 40d23a17 ca4f38ed 
+    dbe2ed2a fbdddaf6 47bd55cc eaa262eb b19fabab 6ea567e3 67c6728a d1b47550 
+    9b6857e8 d714d636 807e85ff 7ec35b26 eac7ac7f 0753daca ad2388e0 6824b29e 
+    6775f4aa 56c537fa 1411a3f1 f9afae1e e9408911 b0ece7a4 cd7acba8 f9807ca2 
+    85e319c6 7e6117e7 28e8c431 5fbb3846 939a2338 86875dd1 17d18f02 5bb47818 
+    f6ba1a8f 0ce48b96 1c006799 bd703239 6abc3538 9aa93d0d ef1d0219 27a9b079 
+    552ebb49 9445aa1f 76a35def d2f7383d 4f87e427 8f5f0f02 03010001 a351304f 
+    300b0603 551d0f04 04030201 86300f06 03551d13 0101ff04 05300301 01ff301d 
+    0603551d 0e041604 14c0e919 6d9fc9ff d6038a35 41b4ea3b 555e1eb6 b4301006 
+    092b0601 04018237 15010403 02010030 0d06092a 864886f7 0d010105 05000382 
+    02010060 ce18ead7 b336cba5 5bba4d86 be113d5e 06f524d2 cf05f9f3 f76ec2db 
+    d9f0cb27 63dd78ce 3f26af48 64090d29 92ed403f b879e467 84e8a20b 98c5b3db 
+    ccd486b1 7cf134f8 965e1d78 8209c4e4 937cac66 7e46bd58 096016e0 317c04af 
+    319f20cb 69146e1e b47cd52e 3faf51f1 c9d12811 9624c85a fca1c48c 66ae4c6a 
+    59348f48 e394fe41 2e77570f 4bcf118b 6b17a628 f9887f82 6112c36d 7e40fa8f 
+    886362ef 6cfc72c8 2ef04f7b 9bcaee12 ffb14168 afa19e73 8e32b42c 9aec2360 
+    dccec725 d7e65ced 1348d09a c7d8346b 4f76aeac 3f5d8fcf c75ec9c9 47ea1a67 
+    977d6cc4 4118e773 91b65d7f ed617471 50538355 e2f09756 6e505a48 c486a72c 
+    472952b1 2f1d68e3 1176a1f7 ec8b2a68 a3077133 8e2b4d0f cb111a09 7f37f15a 
+    05fb5145 19ab5d1b 8eaa0258 0dc7756f 9d979c80 6bd354f1 943514f5 619f67d0 
+    8032ae98 db0bc402 0fb350a9 05f55fc0 30e28c7e 9bdb7b04 36803c72 1479e9bd 
+    99483a14 98a6eebb c4de2ef3 70cfc23b 886b40b4 fcbbb5f9 f991740b 43935b8c 
+    e0755014 90cf63d3 81a82dd1 d3c9798d c5e53180 4fa7e5db 6b9bf98b 6a574f42 
+    66ebe7f5 f846f897 ff8def82 5613c13a 10e6f30b 97597c61 e43c37a2 01531126 
+    f796f263 eef1021c fa374b16 03dd73de 34e9bada 11763f32 e961353e af929580 
+    784d39a3 48d74bd2 3864e9b4 c842a5f4 57fe3c11 21e06f54 4dd26403 3f153bda 
+    86acce
+  quit
+crypto isakmp identity address 
+crypto ikev2 policy 1
+ encryption 3des
+ integrity sha
+ group 2
+ prf sha
+ lifetime seconds 43200
+crypto ikev2 enable outside-microwave-to-afpc
+crypto ikev2 enable outside-satcom
+crypto ikev2 enable outside-microwave-to-SITE4
+!
+track 1 rtr 123 reachability
+telnet timeout 5
+ssh stricthostkeycheck
+ssh timeout 5
+ssh key-exchange group dh-group1-sha1
+console timeout 0
+threat-detection basic-threat
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+dynamic-access-policy-record DfltAccessPolicy
+username all
+tunnel-group 192.168.0.1 type ipsec-l2l
+tunnel-group 192.168.0.1 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
+tunnel-group 192.168.0.6 type ipsec-l2l
+tunnel-group 192.168.0.6 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
+tunnel-group 192.168.1.1 type ipsec-l2l
+tunnel-group 192.168.1.1 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
+!
+class-map inspection_default
+ match default-inspection-traffic
+!
+!
+policy-map type inspect dns preset_dns_map
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map global_policy
+ class inspection_default
+  inspect ip-options 
+  inspect netbios 
+  inspect rtsp 
+  inspect sunrpc 
+  inspect tftp 
+  inspect xdmcp 
+  inspect dns preset_dns_map 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect rsh 
+  inspect esmtp 
+  inspect sqlnet 
+  inspect sip  
+  inspect skinny  
+policy-map type inspect dns migrated_dns_map_2
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map type inspect dns migrated_dns_map_1
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+!
+service-policy global_policy global
+prompt hostname context 
+no call-home reporting anonymous
+call-home
+ profile CiscoTAC-1
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination transport-method http
+  subscribe-to-alert-group diagnostic
+  subscribe-to-alert-group environment
+  subscribe-to-alert-group inventory periodic monthly
+  subscribe-to-alert-group configuration periodic monthly
+  subscribe-to-alert-group telemetry periodic daily
+ profile License
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination transport-method http</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0"/>
+        <interface id="1" name="GigabitEthernet0/1"/>
+        <interface id="2" name="GigabitEthernet0/2"/>
+        <interface id="3" name="GigabitEthernet0/3"/>
+        <interface id="4" name="GigabitEthernet0/4"/>
+    </node>
+    <node name="AFPC-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="405,153">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 19:05:41 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname AFPC-ADM-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.170 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description &lt;== Connection to AFPC-TB-OR-01 G0/2 ==&gt;
+ ip address 172.16.0.2 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to AFPC-ADM-SRV-01 ==&gt;
+ ip address 10.128.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 172.16.0.1
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="LUAY-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="757,153">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 20:10:00 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname LUAY-ADM-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.175 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to LUAY-ADM-SRV-01 ==&gt;
+ ip address 10.129.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="SITE5-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="917,466">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 18:39:43 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SITE5-ADM-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.191 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description &lt;== Connection to SITE5-TB-OR-01 G0/2 ==&gt;
+ ip address 172.16.5.2 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to SITE5-ADM-SRV-01 ==&gt;
+ ip address 10.133.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 172.168.5.1
+ip route 0.0.0.0 0.0.0.0 172.16.5.1
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="SITE4-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="603,466">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 19:05:03 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SITE4-ADM-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.186 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description &lt;== Connection to SITE4-TB-OR-01 G0/2 ==&gt;
+ ip address 172.16.4.2 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to SITE4-ADM-SRV-01 ==&gt;
+ ip address 10.132.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 172.16.4.1
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="SITE3-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="273,468">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 18:28:13 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SITE3-ADM-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.181 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description &lt;== Connection to SITE-TB-OR-01 G0/2 ==&gt;
+ ip address 172.16.3.2 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to SITE3-ADM-SRV-01 ==&gt;
+ ip address 10.131.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 172.16.3.1
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="AFPC-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="566,153">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 19:20:17 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname AFPC-OPS-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+crypto ikev2 keyring KEYS
+ peer SITE3
+  address 172.16.3.6
+  pre-shared-key cisco
+ !
+!
+!
+crypto ikev2 profile P1
+ match identity remote address 172.16.3.6 255.255.255.255 
+ authentication local pre-share
+ authentication remote pre-share
+ keyring local KEYS
+!
+!
+!
+!
+!
+!
+crypto map SITE3-CRYPTO-MAP 10 ipsec-isakmp 
+ set peer 172.16.3.6
+ set ikev2-profile P1
+ match address OPS-NET
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.172 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description &lt;== Connection to AFPC-TB-OR-01 G0/3 ==&gt;
+ ip address 172.16.0.6 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+ crypto map SITE3-CRYPTO-MAP
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to AFPC-OPS-SRV-01 ==&gt;
+ ip address 10.0.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 172.16.0.5
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ip access-list extended OPS-NET
+ permit ip 10.0.0.0 0.127.255.255 10.0.0.0 0.127.255.255
+!
+ipv6 ioam timestamp
+!
+!
+access-list 100 permit ip 10.0.0.0 0.127.255.255 10.0.0.0 0.127.255.255
+access-list 100 deny   ip any any log
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="LUAY-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="907,153">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 19:55:39 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname LUAY-OPS-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.177 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to LUAY-OPS-SRV-01 ==&gt;
+ ip address 10.1.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="SITE5-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="1057,466">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 19:40:22 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SITE5-OPS-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.193 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description &lt;== Connection to SITE5-TB-OR-01 G0/3 ==&gt;
+ ip address 172.16.5.6 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to SITE5-OPS-SRV-01 ==&gt;
+ ip address 10.5.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 172.16.5.5
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="SITE4-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="735,466">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 18:28:10 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SITE4-OPS-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.188 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description &lt;== Connection to SITE4-TB-OR-01 G0/2 ==&gt;
+ ip address 172.16.4.6 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to SITE4-OPS-SRV-01 ==&gt;
+ ip address 10.4.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="SITE3-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="415,468">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 19:41:58 UTC Thu Jun 7 2018
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SITE3-OPS-IR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+crypto ikev2 keyring KEYS
+ peer AFPC
+  address 172.16.0.6
+  pre-shared-key cisco
+ !
+!
+!
+crypto ikev2 profile P1
+ match identity remote address 172.16.0.6 255.255.255.255 
+ authentication local pre-share
+ authentication remote pre-share
+ keyring local KEYS
+!
+!
+!
+!
+!
+!
+crypto map AFPC-CRYPTO-MAP 10 ipsec-isakmp 
+ set peer 172.16.0.6
+ set ikev2-profile P1
+ match address OPS-NET
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.1.183 255.255.255.0
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description &lt;== Connection to SITE3-TB-OR-01 G0/3 ==&gt;
+ ip address 172.16.3.6 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+ crypto map AFPC-CRYPTO-MAP
+!
+interface GigabitEthernet0/2
+ description &lt;== Connection to SITE3-OPS-SRV-01 ==&gt;
+ ip address 10.3.10.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 172.16.3.5
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ip access-list extended OPS-NET
+ permit ip 10.0.0.0 0.127.255.255 10.0.0.0 0.127.255.255
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory SITE4er. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="AFPC-ADM-SRV-01" type="SIMPLE" subtype="server" location="405,77">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: AFPC-ADM-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.128.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.128.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <node name="AFPC-OPS-SRV-01" type="SIMPLE" subtype="server" location="566,77">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: AFPC-OPS-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.0.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.0.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <node name="LUAY-ADM-SRV-01" type="SIMPLE" subtype="server" location="757,77">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: LUAY-ADM-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.129.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.129.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <node name="LUAY-OPS-SRV-01" type="SIMPLE" subtype="server" location="907,77">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: LUAY-OPS-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.1.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.1.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <node name="SITE5-ADM-SRV-01" type="SIMPLE" subtype="server" location="917,548">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: SITE5-ADM-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.133.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.133.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <node name="SITE5-OPS-SRV-01" type="SIMPLE" subtype="server" location="1057,548">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: SITE5-OPS-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.5.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.5.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <node name="SITE4-ADM-SRV-01" type="SIMPLE" subtype="server" location="603,548">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: SITE4-ADM-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.132.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.132.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <node name="SITE4-OPS-SRV-01" type="SIMPLE" subtype="server" location="735,548">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: SITE4-OPS-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.4.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.4.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <node name="SITE3-ADM-SRV-01" type="SIMPLE" subtype="server" location="273,550">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: SITE3-ADM-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.131.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.131.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <node name="SITE3-OPS-SRV-01" type="SIMPLE" subtype="server" location="415,550">
+        <extensions>
+            <entry key="config" type="String">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: SITE3-OPS-SRV-01
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.23.10
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.3.10.10 netmask 255.255.255.0
+    route add -net 0.0.0.0/0 gw 10.3.10.1 dev eth1
+    exit 0</entry>
+        </extensions>
+        <interface id="0" name="eth1"/>
+    </node>
+    <annotations>
+        <rect x="8" y="212" radius="10" width="247" height="211" fill="CCCCCC" stroke-width="3"/>
+        <rect x="0" y="-17" radius="10" width="1006" height="465" fill="CCCCCC" stroke-width="3"/>
+        <text x="65" y="416" font-size="18">text annotation</text>
+        <text x="138" y="273" font-size="18">text annotation</text>
+    </annotations>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[2]" src="/virl:topology/virl:node[5]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[3]" src="/virl:topology/virl:node[6]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[7]" src="/virl:topology/virl:node[3]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[6]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[8]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[9]" src="/virl:topology/virl:node[6]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[3]" src="/virl:topology/virl:node[7]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[2]" src="/virl:topology/virl:node[8]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[9]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[3]" src="/virl:topology/virl:node[11]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[10]/virl:interface[1]" src="/virl:topology/virl:node[5]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[4]" src="/virl:topology/virl:node[12]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[3]" src="/virl:topology/virl:node[13]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[14]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[4]" src="/virl:topology/virl:node[15]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[4]" src="/virl:topology/virl:node[16]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[5]" src="/virl:topology/virl:node[1]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[2]" src="/virl:topology/virl:node[17]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[12]/virl:interface[2]" src="/virl:topology/virl:node[18]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[8]/virl:interface[2]" src="/virl:topology/virl:node[19]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[13]/virl:interface[2]" src="/virl:topology/virl:node[20]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[9]/virl:interface[2]" src="/virl:topology/virl:node[21]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[14]/virl:interface[2]" src="/virl:topology/virl:node[22]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[10]/virl:interface[2]" src="/virl:topology/virl:node[23]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[15]/virl:interface[2]" src="/virl:topology/virl:node[24]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[11]/virl:interface[2]" src="/virl:topology/virl:node[25]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[16]/virl:interface[2]" src="/virl:topology/virl:node[26]/virl:interface[1]"/>
+</topology>
