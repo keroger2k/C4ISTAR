@@ -6,7 +6,7 @@
     <node name="MW-SAT-WAN" type="SIMPLE" subtype="IOSvL2" location="672,283">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 00:53:37 UTC Mon Jun 11 2018
+! Last configuration change at 14:37:32 UTC Sun Jun 17 2018
 !
 version 15.2
 service timestamps debug datetime msec
@@ -1803,7 +1803,7 @@ call-home
     <node name="AFPC-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="405,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 09:46:21 UTC Mon Jun 11 2018
+! Last configuration change at 01:09:03 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -1854,15 +1854,46 @@ redundancy
 !
 !
 !
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 2
+crypto isakmp key test address 0.0.0.0        
+!
+!
+crypto ipsec transform-set MYSET esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile P1
+ set transform-set MYSET 
 !
 !
 !
 !
 !
 !
+!
+interface Loopback0
+ description &lt;== OSPF Router ID ==&gt;
+ ip address 10.128.255.1 255.255.255.255
+!
+interface Tunnel0
+ bandwidth 1000
+ ip address 192.168.10.1 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp authentication cisco123
+ ip nhrp map multicast dynamic
+ ip nhrp network-id 1
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-multipoint
+ tunnel source 172.16.0.2
+ tunnel mode gre multipoint
+ tunnel key 6
+ tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.198 255.255.255.0
+ no ip address
  shutdown
  duplex auto
  speed auto
@@ -1881,6 +1912,13 @@ interface GigabitEthernet0/2
  duplex auto
  speed auto
  media-type rj45
+!
+router ospf 1
+ passive-interface default
+ no passive-interface Tunnel0
+ network 10.128.10.0 0.0.0.255 area 0
+ network 10.128.255.1 0.0.0.0 area 0
+ network 192.168.10.0 0.0.0.255 area 0
 !
 ip forward-protocol nd
 !
@@ -1942,7 +1980,7 @@ end</entry>
     <node name="LUAY-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="757,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:54:00 UTC Mon Jun 11 2018
+! Last configuration change at 05:34:06 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2080,7 +2118,7 @@ end</entry>
     <node name="SITE5-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="917,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:37:35 UTC Mon Jun 11 2018
+! Last configuration change at 04:25:00 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2131,12 +2169,44 @@ redundancy
 !
 !
 !
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 2
+crypto isakmp key test address 0.0.0.0        
+!
+!
+crypto ipsec transform-set MYSET esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile P1
+ set transform-set MYSET 
 !
 !
 !
 !
 !
 !
+!
+interface Loopback0
+ description &lt;== OSPF Router ID ==&gt;
+ ip address 10.133.255.1 255.255.255.255
+!
+interface Tunnel0
+ bandwidth 1000
+ ip address 192.168.10.5 255.255.255.0
+ ip mtu 1400
+ ip nhrp authentication cisco123
+ ip nhrp map multicast 172.16.0.2
+ ip nhrp map 192.168.10.1 172.16.0.2
+ ip nhrp network-id 1
+ ip nhrp nhs 192.168.10.1
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-multipoint
+ tunnel source 172.16.5.2
+ tunnel destination 172.16.0.2
+ tunnel key 6
+ tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
  ip address 172.16.1.219 255.255.255.0
@@ -2159,12 +2229,18 @@ interface GigabitEthernet0/2
  speed auto
  media-type rj45
 !
+router ospf 1
+ passive-interface default
+ no passive-interface Tunnel0
+ network 10.133.10.0 0.0.0.255 area 0
+ network 10.133.255.1 0.0.0.0 area 0
+ network 192.168.10.0 0.0.0.255 area 0
+!
 ip forward-protocol nd
 !
 !
 no ip http server
 no ip http secure-server
-ip route 0.0.0.0 0.0.0.0 172.168.5.1
 ip route 0.0.0.0 0.0.0.0 172.16.5.1
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
@@ -2220,7 +2296,7 @@ end</entry>
     <node name="SITE4-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="603,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:25:15 UTC Mon Jun 11 2018
+! Last configuration change at 03:30:42 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2271,12 +2347,44 @@ redundancy
 !
 !
 !
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 2
+crypto isakmp key test address 0.0.0.0        
+!
+!
+crypto ipsec transform-set MYSET esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile P1
+ set transform-set MYSET 
 !
 !
 !
 !
 !
 !
+!
+interface Loopback0
+ description &lt;== OSPF Router ID ==&gt;
+ ip address 10.132.255.1 255.255.255.255
+!
+interface Tunnel0
+ bandwidth 1000
+ ip address 192.168.10.4 255.255.255.0
+ ip mtu 1400
+ ip nhrp authentication cisco123
+ ip nhrp map multicast 172.16.0.2
+ ip nhrp map 192.168.10.1 172.16.0.2
+ ip nhrp network-id 1
+ ip nhrp nhs 192.168.10.1
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-multipoint
+ tunnel source 172.16.4.2
+ tunnel destination 172.16.0.2
+ tunnel key 6
+ tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
  ip address 172.16.1.214 255.255.255.0
@@ -2298,6 +2406,13 @@ interface GigabitEthernet0/2
  duplex auto
  speed auto
  media-type rj45
+!
+router ospf 1
+ passive-interface default
+ no passive-interface Tunnel0
+ network 10.132.10.0 0.0.0.255 area 0
+ network 10.132.255.1 0.0.0.0 area 0
+ network 192.168.10.0 0.0.0.255 area 0
 !
 ip forward-protocol nd
 !
@@ -2359,7 +2474,7 @@ end</entry>
     <node name="SITE3-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="273,468">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:31:22 UTC Mon Jun 11 2018
+! Last configuration change at 03:55:05 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2410,15 +2525,47 @@ redundancy
 !
 !
 !
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 2
+crypto isakmp key test address 0.0.0.0        
+!
+!
+crypto ipsec transform-set MYSET esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile P1
+ set transform-set MYSET 
 !
 !
 !
 !
 !
 !
+!
+interface Loopback0
+ description &lt;== OSPF Router ID ==&gt;
+ ip address 10.131.255.1 255.255.255.255
+!
+interface Tunnel0
+ bandwidth 1000
+ ip address 192.168.10.3 255.255.255.0
+ ip mtu 1400
+ ip nhrp authentication cisco123
+ ip nhrp map multicast 172.16.0.2
+ ip nhrp map 192.168.10.1 172.16.0.2
+ ip nhrp network-id 1
+ ip nhrp nhs 192.168.10.1
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-multipoint
+ tunnel source 172.16.3.2
+ tunnel destination 172.16.0.2
+ tunnel key 6
+ tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.209 255.255.255.0
+ no ip address
  shutdown
  duplex auto
  speed auto
@@ -2437,6 +2584,13 @@ interface GigabitEthernet0/2
  duplex auto
  speed auto
  media-type rj45
+!
+router ospf 1
+ passive-interface default
+ no passive-interface Tunnel0
+ network 10.131.10.0 0.0.0.255 area 0
+ network 10.131.255.1 0.0.0.0 area 0
+ network 192.168.10.0 0.0.0.255 area 0
 !
 ip forward-protocol nd
 !
@@ -2498,7 +2652,7 @@ end</entry>
     <node name="AFPC-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="566,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:34:17 UTC Mon Jun 11 2018
+! Last configuration change at 04:40:06 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2661,7 +2815,7 @@ end</entry>
     <node name="LUAY-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="907,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:36:25 UTC Mon Jun 11 2018
+! Last configuration change at 04:27:50 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2799,7 +2953,7 @@ end</entry>
     <node name="SITE5-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="1057,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:34:29 UTC Mon Jun 11 2018
+! Last configuration change at 04:12:19 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2938,7 +3092,7 @@ end</entry>
     <node name="SITE4-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="735,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:17:56 UTC Mon Jun 11 2018
+! Last configuration change at 03:13:02 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3076,7 +3230,7 @@ end</entry>
     <node name="SITE3-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="415,468">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 10:16:56 UTC Mon Jun 11 2018
+! Last configuration change at 03:27:55 UTC Tue Jun 19 2018
 !
 version 15.6
 service timestamps debug datetime msec
