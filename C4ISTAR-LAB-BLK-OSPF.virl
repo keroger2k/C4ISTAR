@@ -6,7 +6,7 @@
     <node name="MW-SAT-WAN" type="SIMPLE" subtype="IOSvL2" location="672,283">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 14:37:32 UTC Sun Jun 17 2018
+! Last configuration change at 11:09:44 UTC Thu Jun 21 2018
 !
 version 15.2
 service timestamps debug datetime msec
@@ -45,11 +45,32 @@ vlan internal allocation policy ascending
 vlan 10
  name SATCOM
 !
-vlan 100
+vlan 50
  name AFPC_TO_SITE3
 !
-vlan 101
+vlan 51
  name SITE3_TO_SITE4
+!
+vlan 100
+ name AFPC_TO_LUAY
+!
+vlan 103
+ name SATCOM_AFPC_SITE3
+!
+vlan 104
+ name SATCOM_AFPC_SITE4
+!
+vlan 105
+ name SATCOM_AFPC_SITE5
+!
+vlan 203
+ name SATCOM_LUAY_SITE3
+!
+vlan 204
+ name SATCOM_LUAY_SITE4
+!
+vlan 205
+ name SATCOM_LUAY_SITE5
 !
 ! 
 !
@@ -70,25 +91,25 @@ interface GigabitEthernet0/0
 !
 interface GigabitEthernet0/1
  description &lt;== MW Connection AFPC &lt;-&gt; SITE3 ==&gt;
- switchport access vlan 100
+ switchport access vlan 50
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet0/2
  description &lt;== MW Connection SITE4 &lt;-&gt; SITE3 ==&gt;
- switchport access vlan 101
+ switchport access vlan 51
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet0/3
  description &lt;== MW Connection SITE3 &lt;-&gt; AFPC ==&gt;
- switchport access vlan 100
+ switchport access vlan 50
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet1/0
  description &lt;== MW Connection SITE3 &lt;-&gt; SITE4 ==&gt;
- switchport access vlan 101
+ switchport access vlan 51
  media-type rj45
  negotiation auto
 !
@@ -106,25 +127,33 @@ interface GigabitEthernet1/3
 !
 interface GigabitEthernet2/0
  description &lt;== SATCOM Connection ==&gt;
- switchport access vlan 10
+ switchport trunk allowed vlan 100,103-105,203-205
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet2/1
  description &lt;== SATCOM Connection ==&gt;
- switchport access vlan 10
+ switchport trunk allowed vlan 100,103-105,203-205
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet2/2
  description &lt;== SATCOM Connection ==&gt;
- switchport access vlan 10
+ switchport trunk allowed vlan 100,103-105,203-205
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet2/3
  description &lt;== SATCOM Connection ==&gt;
- switchport access vlan 10
+ switchport trunk allowed vlan 100,103-105,203-205
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
  media-type rj45
  negotiation auto
 !
@@ -229,10 +258,30 @@ interface GigabitEthernet0/0
 !
 interface GigabitEthernet0/1
  description &lt;== Connection to SATCOM ==&gt;
- nameif outside-satcom
+ no nameif
  security-level 0
- ip address 192.168.1.1 255.255.255.0 
- ospf cost 100
+ no ip address
+!
+interface GigabitEthernet0/1.100
+ description &lt;== Connection to SATCOM-LUAY ==&gt;
+ vlan 100
+ nameif outside-satcom-luay
+ security-level 0
+ ip address 192.168.4.1 255.255.255.252 
+!
+interface GigabitEthernet0/1.103
+ description &lt;== Connection to SATCOM-SITE3 ==&gt;
+ vlan 103
+ nameif outside-satcom-site3
+ security-level 0
+ ip address 192.168.1.1 255.255.255.252 
+!
+interface GigabitEthernet0/1.105
+ description &lt;== Connection to SATCOM-SITE5 ==&gt;
+ vlan 105
+ nameif outside-satcom-site5
+ security-level 0
+ ip address 192.168.1.9 255.255.255.252 
 !
 interface GigabitEthernet0/2
  description &lt;== Connection to AFPC-ADM-IR-01 G0/1 ==&gt;
@@ -255,11 +304,19 @@ interface Management0/0
 ftp mode passive
 same-security-traffic permit intra-interface
 access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
+access-list LUAY extended permit ip 172.16.0.0 255.255.255.0 172.16.1.0 255.255.255.0 
+access-list LUAY extended permit ip 172.16.1.0 255.255.255.0 172.16.0.0 255.255.255.0 
+access-list SITE3 extended permit ip 172.16.0.0 255.255.255.0 172.16.3.0 255.255.255.0 
+access-list SITE3 extended permit ip 172.16.3.0 255.255.255.0 172.16.0.0 255.255.255.0 
+access-list SITE5 extended permit ip 172.16.0.0 255.255.255.0 172.16.5.0 255.255.255.0 
+access-list SITE5 extended permit ip 172.16.5.0 255.255.255.0 172.16.0.0 255.255.255.0 
 pager lines 23
 mtu outside-microwave-to-SITE3 1500
-mtu outside-satcom 1500
+mtu outside-satcom-site3 1500
 mtu inside-adm 1500
 mtu inside-ops 1500
+mtu outside-satcom-site5 1500
+mtu outside-satcom-luay 1500
 no failover
 no monitor-interface service-module 
 icmp unreachable rate-limit 1 burst-size 1
@@ -270,14 +327,13 @@ arp rate-limit 8192
 router ospf 1
  network 172.16.0.0 255.255.255.0 area 0
  network 192.168.0.0 255.255.255.252 area 0
+ network 192.168.1.0 255.255.255.252 area 0
+ network 192.168.1.4 255.255.255.252 area 0
+ network 192.168.1.8 255.255.255.252 area 0
+ network 192.168.4.0 255.255.255.252 area 0
  log-adj-changes
  redistribute static metric 100 subnets
 !
-route outside-satcom 172.16.0.0 255.255.0.0 192.168.1.2 250
-route outside-satcom 172.16.1.0 255.255.255.0 192.168.1.2 200
-route outside-satcom 172.16.3.0 255.255.255.0 192.168.1.103 200
-route outside-satcom 172.16.4.0 255.255.255.0 192.168.1.104 200
-route outside-satcom 172.16.5.0 255.255.255.0 192.168.1.105 200
 timeout xlate 3:00:00
 timeout pat-xlate 0:00:30
 timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
@@ -301,17 +357,19 @@ crypto ipsec ikev2 ipsec-proposal P1
  protocol esp encryption aes 3des des
  protocol esp integrity sha-1
 crypto ipsec security-association pmtu-aging infinite
-crypto map AFPC-TO-SITE3-SATCOM 1 match address GRAYNET
-crypto map AFPC-TO-SITE3-SATCOM 1 set peer 192.168.1.103 
-crypto map AFPC-TO-SITE3-SATCOM 1 set ikev2 ipsec-proposal P1
 crypto map AFPC-TO-SITE3-MW 1 match address GRAYNET
 crypto map AFPC-TO-SITE3-MW 1 set peer 192.168.0.2 
 crypto map AFPC-TO-SITE3-MW 1 set ikev2 ipsec-proposal P1
 crypto map AFPC-TO-SITE3-MW interface outside-microwave-to-SITE3
-crypto map AFPC-TO-SITE5-SATCOM 1 match address GRAYNET
-crypto map AFPC-TO-SITE5-SATCOM 1 set peer 192.168.1.105 
-crypto map AFPC-TO-SITE5-SATCOM 1 set ikev2 ipsec-proposal P1
-crypto map AFPC-TO-SITE5-SATCOM interface outside-satcom
+crypto map AFPC-TO-SATCOM 10 match address LUAY
+crypto map AFPC-TO-SATCOM 10 set peer 192.168.1.2 
+crypto map AFPC-TO-SATCOM 10 set ikev2 ipsec-proposal P1
+crypto map AFPC-TO-SATCOM 20 match address SITE3
+crypto map AFPC-TO-SATCOM 20 set peer 192.168.1.103 
+crypto map AFPC-TO-SATCOM 20 set ikev2 ipsec-proposal P1
+crypto map AFPC-TO-SATCOM 30 match address SITE5
+crypto map AFPC-TO-SATCOM 30 set peer 192.168.1.105 
+crypto map AFPC-TO-SATCOM 30 set ikev2 ipsec-proposal P1
 crypto ca trustpoint SSL-Trustpoint
  enrollment terminal
  fqdn afpc-tb-or-01.36technology.com
@@ -478,7 +536,6 @@ crypto ikev2 policy 1
  prf sha
  lifetime seconds 43200
 crypto ikev2 enable outside-microwave-to-SITE3
-crypto ikev2 enable outside-satcom
 !
 track 1 rtr 123 reachability
 telnet timeout 5
@@ -496,6 +553,11 @@ tunnel-group 192.168.0.2 ipsec-attributes
  peer-id-validate nocheck
  ikev2 remote-authentication pre-shared-key TEST
  ikev2 local-authentication pre-shared-key TEST
+tunnel-group 192.168.1.2 type ipsec-l2l
+tunnel-group 192.168.1.2 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key test
+ ikev2 local-authentication pre-shared-key test
 tunnel-group 192.168.1.103 type ipsec-l2l
 tunnel-group 192.168.1.103 ipsec-attributes
  peer-id-validate nocheck
@@ -592,9 +654,32 @@ interface GigabitEthernet0/0
  no ip address
 !
 interface GigabitEthernet0/1
- nameif outside-satcom
+ description &lt;== Connection to SATCOM ==&gt;
+ no nameif
  security-level 0
- ip address 192.168.1.2 255.255.255.0 
+ no ip address
+ ospf cost 100
+!
+interface GigabitEthernet0/1.100
+ description &lt;== Connection to SATCOM-AFPC ==&gt;
+ vlan 100
+ nameif outside-satcom-afpc
+ security-level 0
+ ip address 192.168.4.2 255.255.255.252 
+!
+interface GigabitEthernet0/1.203
+ description &lt;== Connection to SATCOM-SITE3 ==&gt;
+ vlan 203
+ nameif outside-satcom-site3
+ security-level 0
+ ip address 192.168.2.1 255.255.255.252 
+!
+interface GigabitEthernet0/1.205
+ description &lt;== Connection to SATCOM-SITE5 ==&gt;
+ vlan 205
+ nameif outside-satcom-site5
+ security-level 0
+ ip address 192.168.2.9 255.255.255.252 
 !
 interface GigabitEthernet0/2
  description &lt;== Connection to LUAY-ADM-IR-01 G0/1 ==&gt;
@@ -615,10 +700,19 @@ interface Management0/0
  no ip address
 !
 ftp mode passive
+access-list AFPC extended permit ip 172.16.1.0 255.255.255.0 172.16.0.0 255.255.255.0 
+access-list AFPC extended permit ip 172.16.0.0 255.255.255.0 172.16.1.0 255.255.255.0 
+access-list SITE3 extended permit ip 172.16.1.0 255.255.255.0 172.16.3.0 255.255.255.0 
+access-list SITE3 extended permit ip 172.16.3.0 255.255.255.0 172.16.1.0 255.255.255.0 
+access-list SITE5 extended permit ip 172.16.1.0 255.255.255.0 172.16.5.0 255.255.255.0 
+access-list SITE5 extended permit ip 172.16.5.0 255.255.255.0 172.16.1.0 255.255.255.0 
+access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
 pager lines 23
-mtu outside-satcom 1500
+mtu outside-satcom-site3 1500
 mtu inside-adm 1500
 mtu inside-ops 1500
+mtu outside-satcom-site5 1500
+mtu outside-satcom-afpc 1500
 no failover
 no monitor-interface service-module 
 icmp unreachable rate-limit 1 burst-size 1
@@ -628,13 +722,12 @@ no arp permit-nonconnected
 arp rate-limit 8192
 router ospf 1
  network 172.16.1.0 255.255.255.0 area 0
+ network 192.168.2.0 255.255.255.252 area 0
+ network 192.168.2.8 255.255.255.252 area 0
+ network 192.168.4.0 255.255.255.252 area 0
  log-adj-changes
+ redistribute static metric 100 subnets
 !
-route outside-satcom 172.16.0.0 255.255.0.0 192.168.1.1 200
-route outside-satcom 172.16.0.0 255.255.255.0 192.168.1.1 255
-route outside-satcom 172.16.3.0 255.255.255.0 192.168.1.103 255
-route outside-satcom 172.16.4.0 255.255.255.0 192.168.1.104 255
-route outside-satcom 172.16.5.0 255.255.255.0 192.168.1.105 255
 timeout xlate 3:00:00
 timeout pat-xlate 0:00:30
 timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
@@ -649,7 +742,19 @@ user-identity default-domain LOCAL
 aaa authentication login-history
 no snmp-server location
 no snmp-server contact
+crypto ipsec ikev2 ipsec-proposal P1
+ protocol esp encryption aes 3des des
+ protocol esp integrity sha-1
 crypto ipsec security-association pmtu-aging infinite
+crypto map LUAY-TO-SATCOM 10 match address AFPC
+crypto map LUAY-TO-SATCOM 10 set peer 192.168.1.1 
+crypto map LUAY-TO-SATCOM 10 set ikev2 ipsec-proposal P1
+crypto map LUAY-TO-SATCOM 20 match address SITE3
+crypto map LUAY-TO-SATCOM 20 set peer 192.168.1.103 
+crypto map LUAY-TO-SATCOM 20 set ikev2 ipsec-proposal P1
+crypto map LUAY-TO-SATCOM 30 match address SITE5
+crypto map LUAY-TO-SATCOM 30 set peer 192.168.1.105 
+crypto map LUAY-TO-SATCOM 30 set ikev2 ipsec-proposal P1
 crypto ca trustpoint _SmartCallHome_ServerCA
  no validation-usage
  crl configure
@@ -700,6 +805,13 @@ crypto ca certificate chain _SmartCallHome_ServerCA
     30526486 89aa9d66 9c0e760c 80f274d8 2af8b83a ced7d60f 11be6bab 14f5bd41 
     a0226389 f1ba0f6f 2963662d 3fac8c72 c5fbc7e4 d40ff23b 4f8c29c7
   quit
+crypto isakmp identity address 
+crypto ikev2 policy 1
+ encryption 3des
+ integrity sha
+ group 2
+ prf sha
+ lifetime seconds 43200
 telnet timeout 5
 ssh stricthostkeycheck
 ssh timeout 5
@@ -709,6 +821,21 @@ threat-detection basic-threat
 threat-detection statistics access-list
 no threat-detection statistics tcp-intercept
 dynamic-access-policy-record DfltAccessPolicy
+tunnel-group 192.168.1.103 type ipsec-l2l
+tunnel-group 192.168.1.103 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
+tunnel-group 192.168.1.105 type ipsec-l2l
+tunnel-group 192.168.1.105 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
+tunnel-group 192.168.1.1 type ipsec-l2l
+tunnel-group 192.168.1.1 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
 !
 class-map inspection_default
  match default-inspection-traffic
@@ -796,9 +923,21 @@ interface GigabitEthernet0/0
 !
 interface GigabitEthernet0/1
  description &lt;== SATCOM ==&gt;
- nameif outside-satcom
+ no nameif
  security-level 0
- ip address 192.168.1.105 255.255.255.0 
+ no ip address
+!
+interface GigabitEthernet0/1.105
+ vlan 105
+ nameif outside-satcom-afpc
+ security-level 0
+ ip address 192.168.1.10 255.255.255.252 
+!
+interface GigabitEthernet0/1.205
+ vlan 205
+ nameif outside-satcom-luay
+ security-level 0
+ ip address 192.168.2.10 255.255.255.252 
 !
 interface GigabitEthernet0/2
  description &lt;== Connection to SITE5-ADM-IR-01 G0/1 ==&gt;
@@ -821,9 +960,10 @@ interface Management0/0
 ftp mode passive
 access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
 pager lines 23
-mtu outside-satcom 1500
+mtu outside-satcom-afpc 1500
 mtu inside-adm 1500
 mtu inside-ops 1500
+mtu outside-satcom-luay 1500
 no failover
 no monitor-interface service-module 
 icmp unreachable rate-limit 1 burst-size 1
@@ -835,10 +975,10 @@ router ospf 1
  network 172.16.5.0 255.255.255.252 area 0
  network 172.16.5.4 255.255.255.252 area 0
  network 172.16.5.0 255.255.255.0 area 0
+ network 192.168.1.8 255.255.255.252 area 0
+ network 192.168.2.8 255.255.255.252 area 0
  log-adj-changes
 !
-route outside-satcom 172.16.0.0 255.255.0.0 192.168.1.1 200
-route outside-satcom 172.16.0.0 255.255.0.0 192.168.1.2 250
 timeout xlate 3:00:00
 timeout pat-xlate 0:00:30
 timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
@@ -860,7 +1000,6 @@ crypto ipsec security-association pmtu-aging infinite
 crypto map SITE5-TO-AFPC-SATCOM 1 match address GRAYNET
 crypto map SITE5-TO-AFPC-SATCOM 1 set peer 192.168.1.1 
 crypto map SITE5-TO-AFPC-SATCOM 1 set ikev2 ipsec-proposal P1
-crypto map SITE5-TO-AFPC-SATCOM interface outside-satcom
 crypto ca trustpoint SSL-Trustpoint
  enrollment terminal
  fqdn SITE5-tb-or-01.36technology.com
@@ -1025,7 +1164,6 @@ crypto ikev2 policy 1
  group 2
  prf sha
  lifetime seconds 43200
-crypto ikev2 enable outside-satcom
 telnet timeout 5
 ssh stricthostkeycheck
 ssh timeout 5
@@ -1456,10 +1594,22 @@ interface GigabitEthernet0/0
  ip address 192.168.0.2 255.255.255.252 
 !
 interface GigabitEthernet0/1
- nameif outside-satcom
+ no nameif
  security-level 0
- ip address 192.168.1.103 255.255.255.0 
- ospf cost 100
+ no ip address
+!
+interface GigabitEthernet0/1.103
+ description &lt;== Connection to SATCOM-AFPC ==&gt;
+ vlan 103
+ nameif outside-satcom-afpc
+ security-level 0
+ ip address 192.168.1.2 255.255.255.252 
+!
+interface GigabitEthernet0/1.203
+ vlan 203
+ nameif outside-satcom-luay
+ security-level 0
+ ip address 192.168.2.2 255.255.255.252 
 !
 interface GigabitEthernet0/2
  description &lt;== Connection to SITE3-ADM-IR-01 G0/1 ==&gt;
@@ -1489,10 +1639,11 @@ same-security-traffic permit intra-interface
 access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
 pager lines 23
 mtu outside-microwave-to-afpc 1500
-mtu outside-satcom 1500
+mtu outside-satcom-afpc 1500
 mtu inside-adm 1500
 mtu inside-ops 1500
 mtu outside-microwave-to-SITE4 1500
+mtu outside-satcom-luay 1500
 no failover
 no monitor-interface service-module 
 icmp unreachable rate-limit 1 burst-size 1
@@ -1504,10 +1655,10 @@ router ospf 1
  network 172.16.3.0 255.255.255.0 area 0
  network 192.168.0.0 255.255.255.252 area 0
  network 192.168.0.4 255.255.255.252 area 0
+ network 192.168.1.0 255.255.255.252 area 0
+ network 192.168.2.0 255.255.255.252 area 0
  log-adj-changes
 !
-route outside-satcom 172.16.0.0 255.255.0.0 192.168.1.1 200
-route outside-satcom 172.16.0.0 255.255.0.0 192.168.1.2 250
 timeout xlate 3:00:00
 timeout pat-xlate 0:00:30
 timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
@@ -1539,10 +1690,12 @@ crypto map SITE3-TO-SITE4 1 match address GRAYNET
 crypto map SITE3-TO-SITE4 1 set peer 192.168.0.6 
 crypto map SITE3-TO-SITE4 1 set ikev2 ipsec-proposal P1
 crypto map SITE3-TO-SITE4 interface outside-microwave-to-SITE4
-crypto map SITE3-TO-AFPC-SATCOM 1 match address GRAYNET
-crypto map SITE3-TO-AFPC-SATCOM 1 set peer 192.168.1.1 
-crypto map SITE3-TO-AFPC-SATCOM 1 set ikev2 ipsec-proposal P1
-crypto map SITE3-TO-AFPC-SATCOM interface outside-satcom
+crypto map SITE3-TO-SATCOM 10 match address GRAYNET
+crypto map SITE3-TO-SATCOM 10 set peer 192.168.1.1 
+crypto map SITE3-TO-SATCOM 10 set ikev2 ipsec-proposal P1
+crypto map SITE3-TO-SATCOM 20 match address GRAYNET
+crypto map SITE3-TO-SATCOM 20 set peer 192.168.1.2 
+crypto map SITE3-TO-SATCOM 20 set ikev2 ipsec-proposal P1
 crypto ca trustpoint SSL-Trustpoint
  enrollment terminal
  fqdn SITE3-tb-or-01.36technology.com
@@ -1709,7 +1862,6 @@ crypto ikev2 policy 1
  prf sha
  lifetime seconds 43200
 crypto ikev2 enable outside-microwave-to-afpc
-crypto ikev2 enable outside-satcom
 crypto ikev2 enable outside-microwave-to-SITE4
 !
 track 1 rtr 123 reachability
@@ -1735,6 +1887,11 @@ tunnel-group 192.168.0.6 ipsec-attributes
  ikev2 local-authentication pre-shared-key TEST
 tunnel-group 192.168.1.1 type ipsec-l2l
 tunnel-group 192.168.1.1 ipsec-attributes
+ peer-id-validate nocheck
+ ikev2 remote-authentication pre-shared-key TEST
+ ikev2 local-authentication pre-shared-key TEST
+tunnel-group 192.168.1.2 type ipsec-l2l
+tunnel-group 192.168.1.2 ipsec-attributes
  peer-id-validate nocheck
  ikev2 remote-authentication pre-shared-key TEST
  ikev2 local-authentication pre-shared-key TEST
@@ -1803,7 +1960,7 @@ call-home
     <node name="AFPC-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="405,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 01:09:03 UTC Tue Jun 19 2018
+! Last configuration change at 13:58:44 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -1980,7 +2137,7 @@ end</entry>
     <node name="LUAY-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="757,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 05:34:06 UTC Tue Jun 19 2018
+! Last configuration change at 19:54:55 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2031,23 +2188,53 @@ redundancy
 !
 !
 !
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 2
+crypto isakmp key test address 0.0.0.0        
+!
+!
+crypto ipsec transform-set MYSET esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile P1
+ set transform-set MYSET 
 !
 !
 !
 !
 !
 !
+interface Loopback0
+ description &lt;== OSPF Router ID ==&gt;
+ ip address 10.129.255.1 255.255.255.255
+!
+interface Tunnel11
+ bandwidth 1000
+ ip address 192.168.11.2 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp authentication cisco123
+ ip nhrp map multicast dynamic
+ ip nhrp network-id 11
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-multipoint
+ shutdown
+ tunnel source 172.16.1.2
+ tunnel mode gre multipoint
+ tunnel key 11
+ tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.203 255.255.255.0
+ no ip address
  shutdown
  duplex auto
  speed auto
  media-type rj45
 !
 interface GigabitEthernet0/1
- no ip address
- shutdown
+ ip address 172.16.1.2 255.255.255.252
  duplex auto
  speed auto
  media-type rj45
@@ -2059,11 +2246,19 @@ interface GigabitEthernet0/2
  speed auto
  media-type rj45
 !
+router ospf 1
+ passive-interface default
+ no passive-interface Tunnel11
+ network 10.129.11.0 0.0.0.255 area 0
+ network 10.129.255.1 0.0.0.0 area 0
+ network 192.168.11.0 0.0.0.255 area 0
+!
 ip forward-protocol nd
 !
 !
 no ip http server
 no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 172.16.1.1
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
@@ -2118,7 +2313,7 @@ end</entry>
     <node name="SITE5-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="917,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 04:25:00 UTC Tue Jun 19 2018
+! Last configuration change at 18:39:19 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2296,7 +2491,7 @@ end</entry>
     <node name="SITE4-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="603,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 03:30:42 UTC Tue Jun 19 2018
+! Last configuration change at 17:23:54 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2474,7 +2669,7 @@ end</entry>
     <node name="SITE3-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="273,468">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 03:55:05 UTC Tue Jun 19 2018
+! Last configuration change at 17:41:44 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2564,6 +2759,23 @@ interface Tunnel0
  tunnel key 6
  tunnel protection ipsec profile P1
 !
+interface Tunnel11
+ bandwidth 1000
+ ip address 192.168.11.3 255.255.255.0
+ ip mtu 1400
+ ip nhrp authentication cisco123
+ ip nhrp map multicast 172.16.1.2
+ ip nhrp map 192.168.11.1 172.16.1.2
+ ip nhrp network-id 11
+ ip nhrp nhs 192.168.11.1
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-multipoint
+ shutdown
+ tunnel source 172.16.3.2
+ tunnel destination 172.16.1.2
+ tunnel key 11
+ tunnel protection ipsec profile P1
+!
 interface GigabitEthernet0/0
  no ip address
  shutdown
@@ -2587,7 +2799,7 @@ interface GigabitEthernet0/2
 !
 router ospf 1
  passive-interface default
- no passive-interface Tunnel0
+ no passive-interface Tunnel11
  network 10.131.10.0 0.0.0.255 area 0
  network 10.131.255.1 0.0.0.0 area 0
  network 192.168.10.0 0.0.0.255 area 0
@@ -2652,7 +2864,7 @@ end</entry>
     <node name="AFPC-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="566,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 04:40:06 UTC Tue Jun 19 2018
+! Last configuration change at 19:26:52 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2815,7 +3027,7 @@ end</entry>
     <node name="LUAY-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="907,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 04:27:50 UTC Tue Jun 19 2018
+! Last configuration change at 19:06:00 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2953,7 +3165,7 @@ end</entry>
     <node name="SITE5-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="1057,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 04:12:19 UTC Tue Jun 19 2018
+! Last configuration change at 18:41:12 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3092,7 +3304,7 @@ end</entry>
     <node name="SITE4-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="735,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 03:13:02 UTC Tue Jun 19 2018
+! Last configuration change at 17:17:54 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3230,7 +3442,7 @@ end</entry>
     <node name="SITE3-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="415,468">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 03:27:55 UTC Tue Jun 19 2018
+! Last configuration change at 17:41:07 UTC Sat Jun 23 2018
 !
 version 15.6
 service timestamps debug datetime msec
