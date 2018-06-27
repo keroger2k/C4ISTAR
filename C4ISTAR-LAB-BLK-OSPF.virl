@@ -252,7 +252,7 @@ names
 !
 interface GigabitEthernet0/0
  description &lt;== Connection to SITE3-TB-OR-01 G0/1 ==&gt;
- nameif outside-microwave-to-SITE3
+ nameif outside-microwave-to-site3
  security-level 0
  ip address 192.168.0.1 255.255.255.252 
 !
@@ -305,7 +305,7 @@ ftp mode passive
 same-security-traffic permit intra-interface
 access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
 pager lines 23
-mtu outside-microwave-to-SITE3 1500
+mtu outside-microwave-to-site3 1500
 mtu outside-satcom-site3 1500
 mtu inside-adm 1500
 mtu inside-ops 1500
@@ -343,7 +343,7 @@ aaa authentication login-history
 no snmp-server location
 no snmp-server contact
 sla monitor 123
- type echo protocol ipIcmpEcho 192.168.0.2 interface outside-microwave-to-SITE3
+ type echo protocol ipIcmpEcho 192.168.0.2 interface outside-microwave-to-site3
  num-packets 3
  frequency 10
 sla monitor schedule 123 life forever start-time now
@@ -355,10 +355,10 @@ crypto map AFPC-TO-SITE3-SATCOM 10 match address GRAYNET
 crypto map AFPC-TO-SITE3-SATCOM 10 set peer 192.168.1.2 
 crypto map AFPC-TO-SITE3-SATCOM 10 set ikev2 ipsec-proposal P1
 crypto map AFPC-TO-SITE3-SATCOM interface outside-satcom-site3
-crypto map AFPC-TO-SITE3-MW 1 match address GRAYNET
-crypto map AFPC-TO-SITE3-MW 1 set peer 192.168.0.2 
-crypto map AFPC-TO-SITE3-MW 1 set ikev2 ipsec-proposal P1
-crypto map AFPC-TO-SITE3-MW interface outside-microwave-to-SITE3
+crypto map AFPC-TO-SITE3-MW 10 match address GRAYNET
+crypto map AFPC-TO-SITE3-MW 10 set peer 192.168.0.2 
+crypto map AFPC-TO-SITE3-MW 10 set ikev2 ipsec-proposal P1
+crypto map AFPC-TO-SITE3-MW interface outside-microwave-to-site3
 crypto map AFPC-TO-SITE5-SATCOM 10 match address GRAYNET
 crypto map AFPC-TO-SITE5-SATCOM 10 set peer 192.168.1.10 
 crypto map AFPC-TO-SITE5-SATCOM 10 set ikev2 ipsec-proposal P1
@@ -532,7 +532,7 @@ crypto ikev2 policy 1
  group 2
  prf sha
  lifetime seconds 43200
-crypto ikev2 enable outside-microwave-to-SITE3
+crypto ikev2 enable outside-microwave-to-site3
 crypto ikev2 enable outside-satcom-site3
 crypto ikev2 enable outside-satcom-site5
 crypto ikev2 enable outside-satcom-luay
@@ -551,8 +551,8 @@ username all
 tunnel-group 192.168.0.2 type ipsec-l2l
 tunnel-group 192.168.0.2 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication pre-shared-key TEST
- ikev2 local-authentication pre-shared-key TEST
+ ikev2 remote-authentication pre-shared-key cisco
+ ikev2 local-authentication pre-shared-key cisco
 tunnel-group 192.168.1.10 type ipsec-l2l
 tunnel-group 192.168.1.10 ipsec-attributes
  peer-id-validate nocheck
@@ -1270,7 +1270,7 @@ names
 
 !
 interface GigabitEthernet0/0
- nameif outside-microwave-SITE3
+ nameif outside-microwave-site3
  security-level 0
  ip address 192.168.0.6 255.255.255.252 
 !
@@ -1300,9 +1300,9 @@ interface Management0/0
  ip address 172.16.1.218 255.255.255.0 
 !
 ftp mode passive
-access-list ACL1 extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
+access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
 pager lines 23
-mtu outside-microwave-SITE3 1500
+mtu outside-microwave-site3 1500
 mtu inside-adm 1500
 mtu inside-ops 1500
 no failover
@@ -1336,11 +1336,11 @@ crypto ipsec ikev2 ipsec-proposal P1
  protocol esp encryption aes 3des des
  protocol esp integrity sha-1
 crypto ipsec security-association pmtu-aging infinite
-crypto map cmap 1 match address ACL1
-crypto map cmap 1 set peer 192.168.0.5 
-crypto map cmap 1 set ikev2 ipsec-proposal P1
-crypto map cmap 1 set trustpoint SSL-Trustpoint
-crypto map cmap interface outside-microwave-SITE3
+crypto map SITE4-TO-SITE3-MW 10 match address GRAYNET
+crypto map SITE4-TO-SITE3-MW 10 set peer 192.168.0.5 
+crypto map SITE4-TO-SITE3-MW 10 set ikev2 ipsec-proposal P1
+crypto map SITE4-TO-SITE3-MW 10 set trustpoint SSL-Trustpoint
+crypto map SITE4-TO-SITE3-MW interface outside-microwave-site3
 crypto ca trustpoint SSL-Trustpoint
  enrollment terminal
  fqdn SITE4-tb-or-01.36technology.com
@@ -1506,7 +1506,7 @@ crypto ikev2 policy 1
  group 2
  prf sha
  lifetime seconds 43200
-crypto ikev2 enable outside-microwave-SITE3
+crypto ikev2 enable outside-microwave-site3
 telnet timeout 5
 ssh stricthostkeycheck
 ssh timeout 5
@@ -1519,8 +1519,8 @@ dynamic-access-policy-record DfltAccessPolicy
 tunnel-group 192.168.0.5 type ipsec-l2l
 tunnel-group 192.168.0.5 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication pre-shared-key TEST
- ikev2 local-authentication pre-shared-key TEST
+ ikev2 remote-authentication pre-shared-key cisco
+ ikev2 local-authentication pre-shared-key cisco
 !
 class-map inspection_default
  match default-inspection-traffic
@@ -1694,14 +1694,14 @@ crypto ipsec ikev2 ipsec-proposal P1
  protocol esp encryption aes 3des des
  protocol esp integrity sha-1
 crypto ipsec security-association pmtu-aging infinite
-crypto map SITE3-TO-AFPC 1 match address GRAYNET
-crypto map SITE3-TO-AFPC 1 set peer 192.168.0.1 
-crypto map SITE3-TO-AFPC 1 set ikev2 ipsec-proposal P1
-crypto map SITE3-TO-AFPC interface outside-microwave-to-afpc
-crypto map SITE3-TO-SITE4 1 match address GRAYNET
-crypto map SITE3-TO-SITE4 1 set peer 192.168.0.6 
-crypto map SITE3-TO-SITE4 1 set ikev2 ipsec-proposal P1
-crypto map SITE3-TO-SITE4 interface outside-microwave-to-SITE4
+crypto map SITE3-TO-AFPC-MW 10 match address GRAYNET
+crypto map SITE3-TO-AFPC-MW 10 set peer 192.168.0.1 
+crypto map SITE3-TO-AFPC-MW 10 set ikev2 ipsec-proposal P1
+crypto map SITE3-TO-AFPC-MW interface outside-microwave-to-afpc
+crypto map SITE3-TO-SITE4-MW 10 match address GRAYNET
+crypto map SITE3-TO-SITE4-MW 10 set peer 192.168.0.6 
+crypto map SITE3-TO-SITE4-MW 10 set ikev2 ipsec-proposal P1
+crypto map SITE3-TO-SITE4-MW interface outside-microwave-to-SITE4
 crypto map SITE3-TO-AFPC-SATCOM 10 match address GRAYNET
 crypto map SITE3-TO-AFPC-SATCOM 10 set peer 192.168.1.1 
 crypto map SITE3-TO-AFPC-SATCOM 10 set ikev2 ipsec-proposal P1
@@ -1894,18 +1894,18 @@ username all
 tunnel-group 192.168.0.1 type ipsec-l2l
 tunnel-group 192.168.0.1 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication pre-shared-key TEST
- ikev2 local-authentication pre-shared-key TEST
+ ikev2 remote-authentication pre-shared-key cisco
+ ikev2 local-authentication pre-shared-key cisco
 tunnel-group 192.168.0.6 type ipsec-l2l
 tunnel-group 192.168.0.6 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication pre-shared-key TEST
- ikev2 local-authentication pre-shared-key TEST
+ ikev2 remote-authentication pre-shared-key cisco
+ ikev2 local-authentication pre-shared-key cisco
 tunnel-group 192.168.1.1 type ipsec-l2l
 tunnel-group 192.168.1.1 ipsec-attributes
  peer-id-validate nocheck
- ikev2 remote-authentication pre-shared-key TEST
- ikev2 local-authentication pre-shared-key TEST
+ ikev2 remote-authentication pre-shared-key cisco
+ ikev2 local-authentication pre-shared-key cisco
 tunnel-group 192.168.2.1 type ipsec-l2l
 tunnel-group 192.168.2.1 ipsec-attributes
  peer-id-validate nocheck
@@ -2050,7 +2050,7 @@ interface Loopback0
  description &lt;== OSPF Router ID ==&gt;
  ip address 10.128.255.1 255.255.255.255
 !
-interface Tunnel0
+interface Tunnel10
  bandwidth 1000
  ip address 192.168.10.1 255.255.255.0
  no ip redirects
@@ -2088,7 +2088,7 @@ interface GigabitEthernet0/2
 !
 router ospf 1
  passive-interface default
- no passive-interface Tunnel0
+ no passive-interface Tunnel10
  network 10.128.10.0 0.0.0.255 area 0
  network 10.128.255.1 0.0.0.0 area 0
  network 192.168.10.0 0.0.0.255 area 0
@@ -2227,7 +2227,7 @@ interface Loopback0
  description &lt;== OSPF Router ID ==&gt;
  ip address 10.129.255.1 255.255.255.255
 !
-interface Tunnel0
+interface Tunnel10
  bandwidth 1000
  ip address 192.168.10.2 255.255.255.0
  ip mtu 1400
@@ -2280,7 +2280,7 @@ interface GigabitEthernet0/2
 !
 router ospf 1
  passive-interface default
- no passive-interface Tunnel0
+ no passive-interface Tunnel10
  no passive-interface Tunnel11
  network 10.129.11.0 0.0.0.255 area 0
  network 10.129.255.1 0.0.0.0 area 0
@@ -2421,7 +2421,7 @@ interface Loopback0
  description &lt;== OSPF Router ID ==&gt;
  ip address 10.133.255.1 255.255.255.255
 !
-interface Tunnel0
+interface Tunnel10
  bandwidth 1000
  ip address 192.168.10.5 255.255.255.0
  ip mtu 1400
@@ -2476,7 +2476,7 @@ interface GigabitEthernet0/2
 !
 router ospf 1
  passive-interface default
- no passive-interface Tunnel0
+ no passive-interface Tunnel10
  no passive-interface Tunnel11
  network 10.133.10.0 0.0.0.255 area 0
  network 10.133.255.1 0.0.0.0 area 0
@@ -2617,7 +2617,7 @@ interface Loopback0
  description &lt;== OSPF Router ID ==&gt;
  ip address 10.132.255.1 255.255.255.255
 !
-interface Tunnel0
+interface Tunnel10
  bandwidth 1000
  ip address 192.168.10.4 255.255.255.0
  ip mtu 1400
@@ -2672,7 +2672,7 @@ interface GigabitEthernet0/2
 !
 router ospf 1
  passive-interface default
- no passive-interface Tunnel0
+ no passive-interface Tunnel10
  no passive-interface Tunnel11
  network 10.132.10.0 0.0.0.255 area 0
  network 10.132.255.1 0.0.0.0 area 0
@@ -2813,7 +2813,7 @@ interface Loopback0
  description &lt;== OSPF Router ID ==&gt;
  ip address 10.131.255.1 255.255.255.255
 !
-interface Tunnel0
+interface Tunnel10
  bandwidth 1000
  ip address 192.168.10.3 255.255.255.0
  ip mtu 1400
@@ -2868,7 +2868,7 @@ interface GigabitEthernet0/2
 !
 router ospf 1
  passive-interface default
- no passive-interface Tunnel0
+ no passive-interface Tunnel10
  no passive-interface Tunnel11
  network 10.131.10.0 0.0.0.255 area 0
  network 10.131.255.1 0.0.0.0 area 0
