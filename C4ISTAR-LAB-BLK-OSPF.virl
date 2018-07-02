@@ -6,7 +6,7 @@
     <node name="MW-SAT-WAN" type="SIMPLE" subtype="IOSvL2" location="672,283">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 06:31:13 UTC Thu Jun 28 2018
+! Last configuration change at 11:08:33 UTC Sun Jul 1 2018
 !
 version 15.2
 service timestamps debug datetime msec
@@ -299,7 +299,7 @@ interface Management0/0
  shutdown
  no nameif
  no security-level
- ip address 172.16.1.55 255.255.255.0 
+ ip address 172.16.1.83 255.255.255.0 
 !
 ftp mode passive
 same-security-traffic permit intra-interface
@@ -955,7 +955,7 @@ interface Management0/0
  shutdown
  no nameif
  no security-level
- ip address 172.16.1.76 255.255.255.0 
+ ip address 172.16.1.104 255.255.255.0 
 !
 ftp mode passive
 access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
@@ -1297,7 +1297,7 @@ interface Management0/0
  shutdown
  no nameif
  no security-level
- ip address 172.16.1.71 255.255.255.0 
+ ip address 172.16.1.99 255.255.255.0 
 !
 ftp mode passive
 access-list GRAYNET extended permit ip 172.16.0.0 255.255.0.0 172.16.0.0 255.255.0.0 
@@ -1635,7 +1635,7 @@ interface GigabitEthernet0/3
  ip address 172.16.3.5 255.255.255.252 
 !
 interface GigabitEthernet0/4
- nameif outside-microwave-to-SITE4
+ nameif outside-microwave-to-site4
  security-level 0
  ip address 192.168.0.5 255.255.255.252 
 !
@@ -1643,7 +1643,7 @@ interface Management0/0
  shutdown
  no nameif
  no security-level
- ip address 172.16.1.66 255.255.255.0 
+ ip address 172.16.1.94 255.255.255.0 
 !
 ftp mode passive
 same-security-traffic permit intra-interface
@@ -1654,7 +1654,7 @@ mtu outside-satcom-afpc 1500
 mtu outside-satcom-luay 1500
 mtu inside-adm 1500
 mtu inside-ops 1500
-mtu outside-microwave-to-SITE4 1500
+mtu outside-microwave-to-site4 1500
 no failover
 no monitor-interface service-module 
 icmp unreachable rate-limit 1 burst-size 1
@@ -1700,6 +1700,7 @@ crypto map SITE3-TO-AFPC-MW interface outside-microwave-to-afpc
 crypto map SITE3-TO-SITE4-MW 10 match address GRAYNET
 crypto map SITE3-TO-SITE4-MW 10 set peer 192.168.0.6 
 crypto map SITE3-TO-SITE4-MW 10 set ikev2 ipsec-proposal P1
+crypto map SITE3-TO-SITE4-MW interface outside-microwave-to-site4
 crypto map SITE3-TO-AFPC-SATCOM 10 match address GRAYNET
 crypto map SITE3-TO-AFPC-SATCOM 10 set peer 192.168.1.1 
 crypto map SITE3-TO-AFPC-SATCOM 10 set ikev2 ipsec-proposal P1
@@ -1876,7 +1877,7 @@ crypto ikev2 policy 1
 crypto ikev2 enable outside-microwave-to-afpc
 crypto ikev2 enable outside-satcom-afpc
 crypto ikev2 enable outside-satcom-luay
-crypto ikev2 enable outside-microwave-to-SITE4
+crypto ikev2 enable outside-microwave-to-site4
 !
 track 1 rtr 123 reachability
 telnet timeout 5
@@ -1974,7 +1975,7 @@ call-home
     <node name="AFPC-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="405,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 15:09:24 UTC Thu Jun 28 2018
+! Last configuration change at 04:26:04 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2049,22 +2050,22 @@ interface Loopback0
  ip address 10.128.255.1 255.255.255.255
 !
 interface Tunnel10
- bandwidth 1000
+ description &lt;== DMVPN Hub connection for AFPC (Primary) ==&gt;
  ip address 192.168.10.1 255.255.255.0
  no ip redirects
  ip mtu 1400
  ip nhrp authentication cisco123
  ip nhrp map multicast dynamic
- ip nhrp network-id 1
+ ip nhrp network-id 10
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
  tunnel source 172.16.0.2
  tunnel mode gre multipoint
- tunnel key 6
+ tunnel key 10
  tunnel protection ipsec profile P1
 !
 interface Tunnel11
- bandwidth 1000
+ description &lt;== DMVPN connection to LUAY (Secondary) ==&gt;
  ip address 192.168.11.2 255.255.255.0
  ip mtu 1400
  ip nhrp authentication cisco123
@@ -2074,13 +2075,14 @@ interface Tunnel11
  ip nhrp nhs 192.168.11.1
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
+ ip ospf cost 10000
  tunnel source 172.16.0.2
  tunnel destination 172.16.1.2
  tunnel key 11
  tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.51 255.255.255.0
+ ip address 172.16.1.79 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2168,7 +2170,7 @@ end</entry>
     <node name="LUAY-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="757,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 13:17:50 UTC Thu Jun 28 2018
+! Last configuration change at 04:24:12 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2243,23 +2245,23 @@ interface Loopback0
  ip address 10.129.255.1 255.255.255.255
 !
 interface Tunnel10
- bandwidth 1000
+ description &lt;== DMVPN Hub connection to AFPC (Primary) ==&gt;
  ip address 192.168.10.2 255.255.255.0
  ip mtu 1400
  ip nhrp authentication cisco123
  ip nhrp map multicast 172.16.0.2
  ip nhrp map 192.168.10.1 172.16.0.2
- ip nhrp network-id 1
+ ip nhrp network-id 10
  ip nhrp nhs 192.168.10.1
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
  tunnel source 172.16.1.2
  tunnel destination 172.16.0.2
- tunnel key 6
+ tunnel key 10
  tunnel protection ipsec profile P1
 !
 interface Tunnel11
- bandwidth 1000
+ description &lt;== DMVPN connection for LUAY (Secondary) ==&gt;
  ip address 192.168.11.1 255.255.255.0
  no ip redirects
  ip mtu 1400
@@ -2268,13 +2270,14 @@ interface Tunnel11
  ip nhrp network-id 11
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
+ ip ospf cost 10000
  tunnel source 172.16.1.2
  tunnel mode gre multipoint
  tunnel key 11
  tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.56 255.255.255.0
+ ip address 172.16.1.84 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2362,7 +2365,7 @@ end</entry>
     <node name="SITE5-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="917,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 13:36:07 UTC Thu Jun 28 2018
+! Last configuration change at 03:59:16 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2437,23 +2440,23 @@ interface Loopback0
  ip address 10.133.255.1 255.255.255.255
 !
 interface Tunnel10
- bandwidth 1000
+ description &lt;== DMVPN connection to AFPC (Primary) ==&gt;
  ip address 192.168.10.5 255.255.255.0
  ip mtu 1400
  ip nhrp authentication cisco123
  ip nhrp map multicast 172.16.0.2
  ip nhrp map 192.168.10.1 172.16.0.2
- ip nhrp network-id 1
+ ip nhrp network-id 10
  ip nhrp nhs 192.168.10.1
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
  tunnel source 172.16.5.2
  tunnel destination 172.16.0.2
- tunnel key 6
+ tunnel key 10
  tunnel protection ipsec profile P1
 !
 interface Tunnel11
- bandwidth 1000
+ description &lt;== DMVPN connection to LUAY (Secondary) ==&gt;
  ip address 192.168.11.5 255.255.255.0
  ip mtu 1400
  ip nhrp authentication cisco123
@@ -2463,13 +2466,14 @@ interface Tunnel11
  ip nhrp nhs 192.168.11.1
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
+ ip ospf cost 10000
  tunnel source 172.16.5.2
  tunnel destination 172.16.1.2
  tunnel key 11
  tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.72 255.255.255.0
+ ip address 172.16.1.100 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2558,7 +2562,7 @@ end</entry>
     <node name="SITE4-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="603,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 13:39:18 UTC Thu Jun 28 2018
+! Last configuration change at 04:36:44 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2633,23 +2637,23 @@ interface Loopback0
  ip address 10.132.255.1 255.255.255.255
 !
 interface Tunnel10
- bandwidth 1000
+ description &lt;== DMVPN connection to AFPC (Primary) ==&gt;
  ip address 192.168.10.4 255.255.255.0
  ip mtu 1400
  ip nhrp authentication cisco123
  ip nhrp map multicast 172.16.0.2
  ip nhrp map 192.168.10.1 172.16.0.2
- ip nhrp network-id 1
+ ip nhrp network-id 10
  ip nhrp nhs 192.168.10.1
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
  tunnel source 172.16.4.2
  tunnel destination 172.16.0.2
- tunnel key 6
+ tunnel key 10
  tunnel protection ipsec profile P1
 !
 interface Tunnel11
- bandwidth 1000
+ description &lt;== DMVPN connection to LUAY (Secondary) ==&gt;
  ip address 192.168.11.4 255.255.255.0
  ip mtu 1400
  ip nhrp authentication cisco123
@@ -2659,13 +2663,14 @@ interface Tunnel11
  ip nhrp nhs 192.168.11.1
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
+ ip ospf cost 10000
  tunnel source 172.16.4.2
  tunnel destination 172.16.1.2
  tunnel key 11
  tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.67 255.255.255.0
+ ip address 172.16.1.95 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2754,7 +2759,7 @@ end</entry>
     <node name="SITE3-ADM-IR-01" type="SIMPLE" subtype="IOSv" location="273,468">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 13:20:53 UTC Thu Jun 28 2018
+! Last configuration change at 04:25:51 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -2829,23 +2834,23 @@ interface Loopback0
  ip address 10.131.255.1 255.255.255.255
 !
 interface Tunnel10
- bandwidth 1000
+ description &lt;== DMVPN connection to AFPC (Primary) ==&gt;
  ip address 192.168.10.3 255.255.255.0
  ip mtu 1400
  ip nhrp authentication cisco123
  ip nhrp map multicast 172.16.0.2
  ip nhrp map 192.168.10.1 172.16.0.2
- ip nhrp network-id 1
+ ip nhrp network-id 10
  ip nhrp nhs 192.168.10.1
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
  tunnel source 172.16.3.2
  tunnel destination 172.16.0.2
- tunnel key 6
+ tunnel key 10
  tunnel protection ipsec profile P1
 !
 interface Tunnel11
- bandwidth 1000
+ description &lt;== DMVPN connection to LUAY (Secondary) ==&gt;
  ip address 192.168.11.3 255.255.255.0
  ip mtu 1400
  ip nhrp authentication cisco123
@@ -2855,13 +2860,14 @@ interface Tunnel11
  ip nhrp nhs 192.168.11.1
  ip tcp adjust-mss 1360
  ip ospf network point-to-multipoint
+ ip ospf cost 10000
  tunnel source 172.16.3.2
  tunnel destination 172.16.1.2
  tunnel key 11
  tunnel protection ipsec profile P1
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.62 255.255.255.0
+ ip address 172.16.1.90 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -2950,7 +2956,7 @@ end</entry>
     <node name="AFPC-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="566,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 13:38:16 UTC Thu Jun 28 2018
+! Last configuration change at 05:03:11 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3028,7 +3034,7 @@ crypto map SITE3-CRYPTO-MAP 10 ipsec-isakmp
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.53 255.255.255.0
+ ip address 172.16.1.81 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -3113,7 +3119,7 @@ end</entry>
     <node name="LUAY-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="907,153">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 13:50:26 UTC Thu Jun 28 2018
+! Last configuration change at 05:39:36 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3172,7 +3178,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.58 255.255.255.0
+ ip address 172.16.1.86 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -3251,7 +3257,7 @@ end</entry>
     <node name="SITE5-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="1057,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 13:39:08 UTC Thu Jun 28 2018
+! Last configuration change at 04:25:16 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3310,7 +3316,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.74 255.255.255.0
+ ip address 172.16.1.102 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -3390,7 +3396,7 @@ end</entry>
     <node name="SITE4-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="735,466">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 13:35:14 UTC Thu Jun 28 2018
+! Last configuration change at 04:28:50 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3449,7 +3455,7 @@ redundancy
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.69 255.255.255.0
+ ip address 172.16.1.97 255.255.255.0
  shutdown
  duplex auto
  speed auto
@@ -3528,7 +3534,7 @@ end</entry>
     <node name="SITE3-OPS-IR-01" type="SIMPLE" subtype="IOSv" location="415,468">
         <extensions>
             <entry key="config" type="String">!
-! Last configuration change at 13:20:03 UTC Thu Jun 28 2018
+! Last configuration change at 04:38:28 UTC Mon Jul 2 2018
 !
 version 15.6
 service timestamps debug datetime msec
@@ -3606,7 +3612,7 @@ crypto map AFPC-CRYPTO-MAP 10 ipsec-isakmp
 !
 !
 interface GigabitEthernet0/0
- ip address 172.16.1.64 255.255.255.0
+ ip address 172.16.1.92 255.255.255.0
  shutdown
  duplex auto
  speed auto
